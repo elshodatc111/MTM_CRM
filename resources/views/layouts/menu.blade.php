@@ -42,6 +42,20 @@
                     <span>Moliya</span>
                 </a>
             </li>
+            <li class="nav-item {{ request()->routeIs(['vacancy_hodim']) ? 'active' : '' }}">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-briefcase"></i>
+                    <span>Vakansiya</span>
+                </a>
+                <div id="collapseUtilities" class="collapse {{ request()->routeIs(['vacancy_hodim']) ? 'show' : '' }}" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Vakansiya:</h6>
+                        <a class="collapse-item {{ request()->routeIs(['vacancy_hodim']) ? 'active' : '' }}" href="{{ route('vacancy_hodim') }}">Hodimlar</a>
+                        <a class="collapse-item {{ request()->routeIs(['meneger']) ? 'active' : '' }}" href="{{ route('meneger') }}">Bolalar</a>
+                    </div>
+                </div>
+            </li>
             <li class="nav-item {{ request()->routeIs(['meneger','tarbiyachi','oqituvchi','oshpaz','hodimlar']) ? 'active' : '' }}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-users"></i>
