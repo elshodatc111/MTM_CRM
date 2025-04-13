@@ -42,19 +42,17 @@
                     <span>Moliya</span>
                 </a>
             </li>
-            <li class="nav-item {{ request()->routeIs(['vacancy_hodim','vacancy_hodim_show','vacancy_child']) ? 'active' : '' }}">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#vakansiya" aria-expanded="true" aria-controls="vakansiya">
-                    <i class="fas fa-fw fa-briefcase"></i>
-                    <span>Vakansiya</span>
+            <li class="nav-item {{ request()->routeIs(['vacancy_hodim','vacancy_hodim_show']) ? 'active' : '' }}" >
+                <a class="nav-link" href="{{ route('vacancy_hodim') }}">
+                    <i class="fas fa-fw fa-briefcase"></i> <!-- Moliya -->
+                    <span>Hodimlar Jurnali</span>
                 </a>
-                <div id="vakansiya" class="collapse {{ request()->routeIs(['vacancy_hodim','vacancy_hodim_show','vacancy_child']) ? 'show' : '' }}" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Vakansiya:</h6>
-                        <a class="collapse-item {{ request()->routeIs(['vacancy_hodim','vacancy_hodim_show']) ? 'active' : '' }}" href="{{ route('vacancy_hodim') }}">Hodimlar Jurnali</a>
-                        <a class="collapse-item {{ request()->routeIs(['vacancy_child']) ? 'active' : '' }}" href="{{ route('vacancy_child') }}">Bolalar Jurnali</a>
-                    </div>
-                </div>
+            </li>
+            <li class="nav-item {{ request()->routeIs(['vacancy_child','vacancy_child_show']) ? 'active' : '' }}" >
+                <a class="nav-link" href="{{ route('vacancy_child') }}">
+                    <i class="fas fa-fw fa-briefcase"></i> <!-- Moliya -->
+                    <span>Bolalalar Jurnali</span>
+                </a>
             </li>
             <li class="nav-item {{ request()->routeIs(['meneger','tarbiyachi','oqituvchi','oshpaz','hodimlar']) ? 'active' : '' }}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Hodimlar" aria-expanded="true" aria-controls="Hodimlar">

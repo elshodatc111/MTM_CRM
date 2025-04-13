@@ -9,6 +9,7 @@ class PersonService{
     public function store(PersonRequest $request){
         $data = $request->validated();
         $data['status'] = 'new';
+        $data['name'] = strtoupper($data['name']);
         return VacancyChild::create($data);
     }
 

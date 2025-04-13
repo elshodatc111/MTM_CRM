@@ -1,11 +1,11 @@
 @extends('layouts.app01')
 
-@section('title', 'Vakansiya')
+@section('title', 'Hodimlar Jurnali')
 
 @section('content')
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Vakansiya</h1>
+            <h1 class="h3 mb-0 text-gray-800">Hodimlar Jurnali</h1>
         </div>
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -27,7 +27,7 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Bosh sahifa</a></li>
-                <li class="breadcrumb-item">Vakansiyalar</li>
+                <li class="breadcrumb-item">Hodimlar Jurnali</li>
             </ol>
         </nav>
 

@@ -1,11 +1,11 @@
 @extends('layouts.app02')
 
-@section('title', 'Vakansiya')
+@section('title', 'Hodimlar Jurnali')
 
 @section('content')
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Vakansiya</h1>
+            <h1 class="h3 mb-0 text-gray-800">Hodimlar Jurnali</h1>
         </div>
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -27,8 +27,8 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Bosh sahifa</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('vacancy_hodim') }}">Vakansiyalar</a></li>
-                <li class="breadcrumb-item">Vakansiya</li>
+                <li class="breadcrumb-item"><a href="{{ route('vacancy_hodim') }}">Hodimlar Jurnali</a></li>
+                <li class="breadcrumb-item">Hodim haqida</li>
             </ol>
         </nav>
         <!-- Card for Table -->
@@ -57,7 +57,7 @@
             <div class="col-6">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Vakansiya</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Hodim</h6>
                     </div>
                     <div class="card-body">
                         <!-- Table -->
@@ -116,7 +116,7 @@
                 </div>
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Vakansiya haqida izohlar</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Hodim haqida izohlar</h6>
                     </div>
                     <div class="card-body">
                         <!-- Table -->

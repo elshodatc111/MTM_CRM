@@ -1,11 +1,11 @@
 @extends('layouts.app01')
 
-@section('title', 'Vakansiya')
+@section('title', 'Bolalar Jurnali')
 
 @section('content')
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Vakansiya</h1>
+            <h1 class="h3 mb-0 text-gray-800">Bolalar Jurnali</h1>
         </div>
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -27,7 +27,7 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Bosh sahifa</a></li>
-                <li class="breadcrumb-item">Vakansiyalar</li>
+                <li class="breadcrumb-item">Bolalar jurnali</li>
             </ol>
         </nav>
 
@@ -95,7 +95,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Yangi Vakansiya Qo‘shish</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Yangi Bola Qo‘shish</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

@@ -27,7 +27,7 @@ class VacancyChildController extends Controller{
 
     public function show($id){
         $VacancyChild = VacancyChild::findOrFail($id);
-        dd($VacancyChild);
+        //dd($VacancyChild);
         return view('vacancy.child.show', compact('VacancyChild'));
     }
 
