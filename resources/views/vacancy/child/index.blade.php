@@ -34,10 +34,9 @@
         <!-- Card for Table -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Hodimlar Jurnali</h6>
-                <!-- Yangi meneger qo‘shish tugmasi -->
+                <h6 class="m-0 font-weight-bold text-primary">Bolalar Jurnali</h6>
                 <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addMenegerModal">
-                    Yangi Vakansiya Qo‘shish
+                    Yangi Bola Qo‘shish
                 </button>
             </div>
             <div class="card-body">
@@ -47,48 +46,40 @@
                         <thead>
                             <tr class="text-center">
                                 <th>#</th>
-                                <th>Ism</th>
-                                <th>Lavozimi</th>
-                                <th>Telefon raqam</th>
+                                <th>FIO</th>
+                                <th>Yashash manzili</th>
+                                <th>Tug'ilgan kuni</th>
+                                <th>Bizdan nima xohlamoqda</th>
                                 <th>Status</th>
-                                <th>Ishga olindi</th>
+                                <th>Qiziqish bildirhan vaqt</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($hodimlar as $key => $item)
-                                <tr>
-                                    <td class="text-center">{{ $key + 1 }}</td>
-                                    <td style="text-align:left"><a href="{{ route('vacancy_hodim_show', $item->id) }}">{{ $item->name }}</a></td>
-                                    <td class="text-center">
-                                        @if ($item->type == 'oshpaz')
-                                            <span class="badge badge-warning">Oshpaz</span>
-                                        @elseif ($item->type == 'qarovul')
-                                            <span class="badge badge-info">Qarovul</span>
-                                        @elseif ($item->type == 'bogbon')
-                                            <span class="badge badge-info">Bog'bon</span>
-                                        @elseif ($item->type == 'farrosh')
-                                            <span class="badge badge-info">Farrosh</span>
-                                        @else
-                                            <span class="badge badge-success">O'qituvchi</span>
-                                        @endif
+                            @forelse($VacancyChild as $item)
+                                <tr class="text-center">
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td style="text-align:left">
+                                        <a href="{{ route('vacancy_child_show',$item['id']) }}}">{{ $item->name }}</a>
                                     </td>
-                                    <td class="text-center">{{ $item->phone }}</td>
-                                    <td class="text-center">
+                                    <td>{{ $item->address }}</td>
+                                    <td>{{ $item->birthday }}</td>
+                                    <td>{{ $item->description }} </td>
+                                    <td>
                                         @if ($item->status == 'new')
-                                            <span class="badge badge-info">Yangi</span>
+                                            <span class="badge badge-primary">Yangi</span>
                                         @elseif ($item->status == 'pedding')
                                             <span class="badge badge-warning">Kutilmoqda</span>
-                                        @elseif ($item->status == 'cancel')
-                                            <span class="badge badge-danger">Bekor qilindi</span>
+                                        @elseif ($item->status == 'success')
+                                            <span class="badge badge-success">Qabul qilingan</span>
                                         @else
-                                            <span class="badge badge-success">Ishga olindi</span>
+                                            <span class="badge badge-danger">Rad etilgan</span>
                                         @endif
                                     </td>
-                                    <td style="text-align:right">{{ $item->created_at }}</td>
+                                    <td>{{ $item->created_at }}</td>
                                 </tr>
                             @empty
-                                <tr>
-                                    <td colspan="6">Hech narsa topilmadi</td>
+                                <tr class="text-center">
+                                    <td colspan="7">Ma'lumotlar mavjud emas</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -110,42 +101,31 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('vacancy_hodim_create') }}">
+                    <form method="POST" action="{{ route('vacancy_child_create') }}">
                         @csrf
                         <div class="form-group">
                             <label for="name">FIO</label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="form-group">
-                            <label for="name">Yashash manzili</label>
-                            <input type="text" class="form-control" id="addres" name="addres" required>
+                            <label for="address">Yashash manzili</label>
+                            <input type="text" class="form-control" id="address" name="address" required>
                         </div>
                         <div class="form-group">
-                            <label for="phone">Telefon raqami</label>
-                            <input type="text" class="form-control phone" id="phone" value="+998" name="phone" required>
+                            <label for="phone1">Telefon raqami</label>
+                            <input type="text" class="form-control phone" id="phone1" value="+998" name="phone1" required>
                         </div>
                         <div class="form-group">
-                            <label for="name">Tug'ilgan kuni</label>
+                            <label for="phone2">Qoshimcha telefon raqami</label>
+                            <input type="text" class="form-control phone" id="phone2" value="+998" name="phone2" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="birthday">Tug'ilgan kuni</label>
                             <input type="date" class="form-control" id="birthday" name="birthday" required>
                         </div>
                         <div class="form-group">
-                            <label for="worked">Oldingi ish joyi</label>
-                            <textarea class="form-control" id="worked" name="worked" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Oldingi ish haqida</label>
-                            <textarea class="form-control" id="decription" name="decription" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Lavozim</label>
-                            <select class="form-control" id="type" name="type" required>
-                                <option value="">Tanlang...</option>
-                                <option value="oshpaz">Oshpaz</option>
-                                <option value="qarovul">Qarovul</option>
-                                <option value="bogbon">Bog'bon</option>
-                                <option value="farrosh">Farrosh</option>
-                                <option value="techer">O'qituvchi</option>
-                            </select>
+                            <label for="description">Bizdan nima xohlamoqda</label>
+                            <textarea class="form-control" id="description" name="description" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>
