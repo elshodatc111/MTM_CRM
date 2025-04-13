@@ -7,6 +7,13 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Hodimlar Jurnali</h1>
         </div>
+
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Bosh sahifa</a></li>
+                <li class="breadcrumb-item">Hodimlar Jurnali</li>
+            </ol>
+        </nav>
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -24,26 +31,27 @@
                 </ul>
             </div>
         @endif
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}">Bosh sahifa</a></li>
-                <li class="breadcrumb-item">Hodimlar Jurnali</li>
-            </ol>
-        </nav>
 
-        <!-- Card for Table -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Hodimlar Jurnali</h6>
-                <!-- Yangi meneger qo‘shish tugmasi -->
                 <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addMenegerModal">
-                    Yangi Vakansiya Qo‘shish
+                    Yangi Hodim Qo‘shish
                 </button>
             </div>
             <div class="card-body">
-                <!-- Table -->
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size:12px;">
+                    <form action="{{ route('vacancy_hodim') }}" method="get" class="mb-3">
+                        <input 
+                            type="text" 
+                            name="search" 
+                            class="form-control" 
+                            placeholder="Qidiruv..." 
+                            value="{{ request('search') }}" 
+                        >
+                    </form>
+
+                    <table class="table table-bordered" width="100%" cellspacing="0" style="font-size:12px;">
                         <thead>
                             <tr class="text-center">
                                 <th>#</th>
@@ -57,20 +65,27 @@
                         <tbody>
                             @forelse($hodimlar as $key => $item)
                                 <tr>
-                                    <td class="text-center">{{ $key + 1 }}</td>
-                                    <td style="text-align:left"><a href="{{ route('vacancy_hodim_show', $item->id) }}">{{ $item->name }}</a></td>
+                                    <td class="text-center">{{ $hodimlar->firstItem() + $key }}</td>
+                                    <td style="text-align:left">
+                                        <a href="{{ route('vacancy_hodim_show', $item->id) }}">{{ $item->name }}</a>
+                                    </td>
                                     <td class="text-center">
-                                        @if ($item->type == 'oshpaz')
-                                            <span class="badge badge-warning">Oshpaz</span>
-                                        @elseif ($item->type == 'qarovul')
-                                            <span class="badge badge-info">Qarovul</span>
-                                        @elseif ($item->type == 'bogbon')
-                                            <span class="badge badge-info">Bog'bon</span>
-                                        @elseif ($item->type == 'farrosh')
-                                            <span class="badge badge-info">Farrosh</span>
-                                        @else
-                                            <span class="badge badge-success">O'qituvchi</span>
-                                        @endif
+                                        @switch($item->type)
+                                            @case('oshpaz')
+                                                <span class="badge badge-warning">Oshpaz</span>
+                                                @break
+                                            @case('qarovul')
+                                                <span class="badge badge-info">Qarovul</span>
+                                                @break
+                                            @case('bogbon')
+                                                <span class="badge badge-info">Bog'bon</span>
+                                                @break
+                                            @case('farrosh')
+                                                <span class="badge badge-info">Farrosh</span>
+                                                @break
+                                            @default
+                                                <span class="badge badge-success">O'qituvchi</span>
+                                        @endswitch
                                     </td>
                                     <td class="text-center">{{ $item->phone }}</td>
                                     <td class="text-center">
@@ -88,13 +103,16 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6">Hech narsa topilmadi</td>
+                                    <td colspan="6" class="text-center">Hech narsa topilmadi</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
+
+                    <div class="d-flex justify-content-center mt-3">
+                        {{ $hodimlar->links() }}
+                    </div>
                 </div>
-                
             </div>
         </div>
     </div>

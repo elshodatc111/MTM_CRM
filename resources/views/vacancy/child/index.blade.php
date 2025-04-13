@@ -7,6 +7,13 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Bolalar Jurnali</h1>
         </div>
+
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Bosh sahifa</a></li>
+                <li class="breadcrumb-item">Bolalar jurnali</li>
+            </ol>
+        </nav>
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -24,14 +31,6 @@
                 </ul>
             </div>
         @endif
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}">Bosh sahifa</a></li>
-                <li class="breadcrumb-item">Bolalar jurnali</li>
-            </ol>
-        </nav>
-
-        <!-- Card for Table -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Bolalar Jurnali</h6>
@@ -40,9 +39,19 @@
                 </button>
             </div>
             <div class="card-body">
-                <!-- Table -->
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size:12px;">
+                    <form action="{{ route('vacancy_child') }}" method="get">
+                        <input 
+                            type="text" 
+                            name="search" 
+                            class="form-control mb-2" 
+                            placeholder="Qidiruv..." 
+                            value="{{ request('search') }}"
+                            required
+                        >
+                    </form>
+
+                    <table class="table table-bordered" width="100%" cellspacing="0" style="font-size:12px;">
                         <thead>
                             <tr class="text-center">
                                 <th>#</th>
@@ -51,19 +60,19 @@
                                 <th>Tug'ilgan kuni</th>
                                 <th>Bizdan nima xohlamoqda</th>
                                 <th>Status</th>
-                                <th>Qiziqish bildirhan vaqt</th>
+                                <th>Qiziqish bildirgan vaqt</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($VacancyChild as $item)
                                 <tr class="text-center">
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $loop->iteration + ($VacancyChild->currentPage() - 1) * $VacancyChild->perPage() }}</td>
                                     <td style="text-align:left">
-                                        <a href="{{ route('vacancy_child_show',$item['id']) }}}">{{ $item->name }}</a>
+                                        <a href="{{ route('vacancy_child_show', $item->id) }}">{{ $item->name }}</a>
                                     </td>
                                     <td>{{ $item->address }}</td>
                                     <td>{{ $item->birthday }}</td>
-                                    <td>{{ $item->description }} </td>
+                                    <td>{{ $item->description }}</td>
                                     <td>
                                         @if ($item->status == 'new')
                                             <span class="badge badge-primary">Yangi</span>
@@ -84,8 +93,11 @@
                             @endforelse
                         </tbody>
                     </table>
+
+                    <div class="d-flex justify-content-center mt-3">
+                        {{ $VacancyChild->links() }}
+                    </div>
                 </div>
-                
             </div>
         </div>
     </div>

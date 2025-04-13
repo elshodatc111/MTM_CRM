@@ -7,6 +7,15 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Hodimlar Jurnali</h1>
         </div>
+
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Bosh sahifa</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('vacancy_hodim') }}">Hodimlar Jurnali</a></li>
+                <li class="breadcrumb-item">Hodim haqida</li>
+            </ol>
+        </nav>
+        
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -24,40 +33,22 @@
                 </ul>
             </div>
         @endif
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}">Bosh sahifa</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('vacancy_hodim') }}">Hodimlar Jurnali</a></li>
-                <li class="breadcrumb-item">Hodim haqida</li>
-            </ol>
-        </nav>
-        <!-- Card for Table -->
-         <div class="container-fluid mb-3">
-            @if($hodim->status==='new')
-                <div class="progress">
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">Yangi</div>
-                </div>
-            @elseif($hodim->status==='pedding')
-                <div class="progress">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: 67%;" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100">Ko'rib chiqlilmoqda</div>
-                </div>
-            @elseif($hodim->status==='cancel')
-                <div class="progress">
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Bekor qilindi</div>
-                </div>
-            @else 
-                <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Qabul qilindi</div>
-                </div>
-            @endif
-         </div>
-        
         
         <div class="row">
             <div class="col-6">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Hodim</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Hodim
+                        @if($hodim->status==='new')
+                            <span class="badge badge-info">Yangi</span>
+                        @elseif($hodim->status==='pedding')
+                            <span class="badge badge-warning">Ko'rib chiqilmoqda</span>
+                        @elseif($hodim->status==='cancel')
+                            <span class="badge badge-danger">Bekor qilindi</span>
+                        @else
+                            <span class="badge badge-success">Qabul qilindi</span>
+                        @endif
+                        </h6>
                     </div>
                     <div class="card-body">
                         <!-- Table -->
@@ -99,16 +90,16 @@
                 </div>
             </div>
             <div class="col-6">
-                <div class="row px-3">
+                <div class="row mx-1">
                     @if($hodim->status==='new' OR $hodim->status==='pedding')
-                        <button type="button" class="btn btn-primary col-lg-4 mb-2" data-toggle="modal" data-target="#comments">
+                        <button type="button" class="btn btn-primary ml-1 col-lg-4 mb-2" data-toggle="modal" data-target="#comments">
                             Izoh qoldirish
                         </button>
+                        <button type="button" class="btn btn-danger ml-1 col-lg-3 mb-2" data-toggle="modal" data-target="#canceks">
+                            Bekor qilish
+                        </button>
                         @if(auth()->user()->type==='admin')
-                            <button type="button" class="btn btn-danger col-lg-4 mb-2" data-toggle="modal" data-target="#canceks">
-                                Bekor qilish
-                            </button>
-                            <button type="button" class="btn btn-success col-lg-4 mb-2" data-toggle="modal" data-target="#successes">
+                            <button type="button" class="btn btn-success ml-1 col-lg-4 mb-2" data-toggle="modal" data-target="#successes">
                                 Ishga olish
                             </button>
                         @endif

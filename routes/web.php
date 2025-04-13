@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/vacancy/child', [VacancyChildController::class, 'index'])->name('vacancy_child');
     Route::get('/vacancy/child/{id}', [VacancyChildController::class, 'show'])->name('vacancy_child_show');
     Route::post('/vacancy/child/create', [VacancyChildController::class, 'store'])->name('vacancy_child_create');
+    Route::post('/vacancy/child/comment/create', [VacancyChildController::class, 'CommentStore'])->name('vacancy_child_comment_create');
+    Route::post('/vacancy/child/cancel', [VacancyChildController::class, 'CancelStore'])->name('vacancy_child_cancel_create');
 
 });
 

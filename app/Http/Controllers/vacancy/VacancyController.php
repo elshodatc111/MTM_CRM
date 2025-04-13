@@ -21,9 +21,25 @@ class VacancyController extends Controller{
         return redirect()->back()->with('success', 'Vakansiya muvaffaqiyatli qo‘shildi.');
     }
 
-    public function index(){
-        $hodimlar = VacanseHodim::orderBy('id', 'desc')->get();
-        return view('vacancy.hodim.index',compact('hodimlar')); 
+    public function index(Request $request){
+        $query = VacanseHodim::query();
+
+        if ($request->filled('search')) {
+            $request->validate([
+                'search' => 'string|max:100',
+            ]);
+    
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('type', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('type', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%");
+            });
+        }
+        $hodimlar = $query->orderBy('id', 'desc')->paginate(20)->withQueryString();
+        return view('vacancy.hodim.index', compact('hodimlar'));
     }
 
     public function show($id){
