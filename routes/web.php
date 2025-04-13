@@ -20,7 +20,11 @@ Route::middleware('auth')->group(function () {
 
     
     Route::get('/vacancy/hodim', [VacancyController::class, 'index'])->name('vacancy_hodim');
+    Route::get('/vacancy/hodim/{id}', [VacancyController::class, 'show'])->name('vacancy_hodim_show');
     Route::post('/vacancy/hodim/create', [VacancyController::class, 'store'])->name('vacancy_hodim_create');
+    Route::post('/vacancy/hodim/comment', [VacancyController::class, 'comment'])->name('vacancy_hodim_comment');
+    Route::post('/vacancy/hodim/cancel', [VacancyController::class, 'cancel'])->name('vacancy_hodim_cancel');
+    Route::post('/vacancy/hodim/success', [VacancyController::class, 'success'])->name('vacancy_hodim_success');
 });
 
 require __DIR__.'/auth.php';

@@ -34,4 +34,7 @@ class User extends Authenticatable{
             'password' => 'hashed',
         ];
     }
+    public function vacancyComments(){
+        return $this->hasMany(VacancyComment::class);
+    }
 }

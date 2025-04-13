@@ -24,6 +24,12 @@
                 </ul>
             </div>
         @endif
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Bosh sahifa</a></li>
+                <li class="breadcrumb-item">Menegerlar</li>
+            </ol>
+        </nav>
         <!-- Card for Table -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">

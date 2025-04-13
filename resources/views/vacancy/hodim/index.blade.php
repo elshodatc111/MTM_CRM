@@ -24,6 +24,12 @@
                 </ul>
             </div>
         @endif
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Bosh sahifa</a></li>
+                <li class="breadcrumb-item">Vakansiyalar</li>
+            </ol>
+        </nav>
 
         <!-- Card for Table -->
         <div class="card shadow mb-4">
@@ -37,9 +43,9 @@
             <div class="card-body">
                 <!-- Table -->
                 <div class="table-responsive">
-                    <table class="table table-bordered text-center table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size:12px;">
                         <thead>
-                            <tr>
+                            <tr class="text-center">
                                 <th>#</th>
                                 <th>Ism</th>
                                 <th>Lavozimi</th>
@@ -51,8 +57,8 @@
                         <tbody>
                             @forelse($hodimlar as $key => $item)
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
-                                    <td style="text-align:left"><a href="#">{{ $item->name }}</a></td>
+                                    <td class="text-center">{{ $key + 1 }}</td>
+                                    <td style="text-align:left"><a href="{{ route('vacancy_hodim_show', $item->id) }}">{{ $item->name }}</a></td>
                                     <td>
                                         @if ($item->type == 'oshpaz')
                                             <span class="badge badge-warning">Oshpaz</span>
@@ -127,6 +133,10 @@
                             <textarea class="form-control" id="worked" name="worked" required></textarea>
                         </div>
                         <div class="form-group">
+                            <label for="email">Oldingi ish haqida</label>
+                            <textarea class="form-control" id="decription" name="decription" required></textarea>
+                        </div>
+                        <div class="form-group">
                             <label for="status">Lavozim</label>
                             <select class="form-control" id="type" name="type" required>
                                 <option value="">Tanlang...</option>
@@ -136,10 +146,6 @@
                                 <option value="farrosh">Farrosh</option>
                                 <option value="techer">O'qituvchi</option>
                             </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Hodim haqida</label>
-                            <textarea class="form-control" id="decription" name="decription" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>
