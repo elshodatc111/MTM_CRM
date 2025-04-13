@@ -89,5 +89,18 @@
                     <span>Sozlamalar</span>
                 </a>
             </li>
+            <li class="nav-item {{ request()->routeIs(['days','dayss']) ? 'active' : '' }}">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Sozlamalar" aria-expanded="true" aria-controls="Sozlamalar">
+                    <i class="fas fa-fw fa-cogs"></i>
+                    <span>Sozlamalar</span>
+                </a>
+                <div id="Sozlamalar" class="collapse {{ request()->routeIs(['days','days']) ? 'show' : '' }}" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Hodimlar:</h6>
+                        <a class="collapse-item {{ request()->routeIs(['days']) ? 'active' : '' }}" href="{{ route('days') }}">Dam olish kunlari</a>
+                    </div>
+                </div>
+            </li>
             
         </ul>

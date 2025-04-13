@@ -5,6 +5,7 @@ use App\Http\Controllers\hodim\HodimeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\vacancy\VacancyController;
 use App\Http\Controllers\vacancy\VacancyChildController;
+use App\Http\Controllers\Days\DaysController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index']);
@@ -33,6 +34,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/vacancy/child/create', [VacancyChildController::class, 'store'])->name('vacancy_child_create');
     Route::post('/vacancy/child/comment/create', [VacancyChildController::class, 'CommentStore'])->name('vacancy_child_comment_create');
     Route::post('/vacancy/child/cancel', [VacancyChildController::class, 'CancelStore'])->name('vacancy_child_cancel_create');
+
+    
+    Route::get('/days', [DaysController::class, 'index'])->name('days');
+    Route::post('/days/create/shanba', [DaysController::class, 'createShanba'])->name('createShanba');
+    Route::post('/days/create/yakshanba', [DaysController::class, 'createYakshanba'])->name('createYakshanba');
+    Route::post('/days/create/dam', [DaysController::class, 'crateDamKuni'])->name('crateDamKuni');
+    Route::post('/days/delete-archive', [DaysController::class, 'deleteArchive'])->name('days.delete.archive');
+    Route::post('/days/delete', [DaysController::class, 'destroy'])->name('days.destroy');
+
+
 
 });
 
