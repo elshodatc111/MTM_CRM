@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GuruhDavomad extends Model
 {
-    protected $fillable = ['guruh_id', 'cheldren_id', 'days', 'status', 'user_id'];
+    protected $fillable = ['guruh_id', 'cheldren_id', 'tarbiyachi_id','katta_tarbiyachi_id','days', 'status', 'user_id'];
 
     public function guruh()
     {

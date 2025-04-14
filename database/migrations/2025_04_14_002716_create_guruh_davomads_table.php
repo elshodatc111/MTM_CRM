@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('guruh_id')->constrained('guruhs')->onDelete('cascade');
             $table->unsignedBigInteger('cheldren_id');
+            $table->unsignedBigInteger('tarbiyachi_id');
+            $table->unsignedBigInteger('katta_tarbiyachi_id');
             $table->date('days');
             $table->enum('status', ['true', 'false', 'pedding'])->default('pedding');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
