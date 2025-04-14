@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('guruhs', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->decimal('amount', 10, 2)->default(0);
             $table->decimal('katta_tarbiyachi', 10, 2)->default(0);
             $table->decimal('kichik_tarbiyachi', 10, 2)->default(0);

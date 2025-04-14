@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\vacancy\VacancyController;
 use App\Http\Controllers\vacancy\VacancyChildController;
 use App\Http\Controllers\Days\DaysController;
+use App\Http\Controllers\Group\GroupController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index']);
@@ -43,7 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/days/delete-archive', [DaysController::class, 'deleteArchive'])->name('days.delete.archive');
     Route::post('/days/delete', [DaysController::class, 'destroy'])->name('days.destroy');
 
-
+    Route::get('/groups', [GroupController::class, 'index'])->name('groups');
+    Route::get('/groups/{id}', [GroupController::class, 'show'])->name('groups_show');
+    Route::post('/groups/create', [GroupController::class, 'store'])->name('groups_create');
 
 });
 

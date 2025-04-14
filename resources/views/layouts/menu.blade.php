@@ -6,51 +6,45 @@
                 <div class="sidebar-brand-text mx-3">УМКА</div>
             </a>
             <hr class="sidebar-divider my-0">
-            <li class="nav-item active">
+            <li class="nav-item {{ request()->routeIs(['home']) ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('home') }}">
                     <i class="fas fa-fw fa-home"></i>
                     <span>Bosh sahifa</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="groups.html">
-                    <i class="fas fa-fw fa-layer-group"></i> <!-- Guruhlar -->
+            <li class="nav-item {{ request()->routeIs(['groups','groups_show']) ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('groups') }}">
+                    <i class="fas fa-fw fa-layer-group"></i>
                     <span>Guruhlar</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-star"></i> <!-- Qiziqishlar -->
-                    <span>Qiziqishlar</span>
+                    <i class="fas fa-fw fa-smile"></i>
+                    <span>Bolalar</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-briefcase"></i> <!-- Vakansiya -->
-                    <span>Vakansiya</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-cash-register"></i> <!-- Kassa -->
+                    <i class="fas fa-fw fa-cash-register"></i>
                     <span>Kassa</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-chart-line"></i> <!-- Moliya -->
+                    <i class="fas fa-fw fa-chart-line"></i>
                     <span>Moliya</span>
                 </a>
             </li>
             <li class="nav-item {{ request()->routeIs(['vacancy_hodim','vacancy_hodim_show']) ? 'active' : '' }}" >
                 <a class="nav-link" href="{{ route('vacancy_hodim') }}">
-                    <i class="fas fa-fw fa-briefcase"></i> <!-- Moliya -->
+                    <i class="fas fa-fw fa-briefcase"></i>
                     <span>Hodimlar Jurnali</span>
                 </a>
             </li>
             <li class="nav-item {{ request()->routeIs(['vacancy_child','vacancy_child_show']) ? 'active' : '' }}" >
                 <a class="nav-link" href="{{ route('vacancy_child') }}">
-                    <i class="fas fa-fw fa-briefcase"></i> <!-- Moliya -->
+                    <i class="fas fa-fw fa-briefcase"></i>
                     <span>Bolalalar Jurnali</span>
                 </a>
             </li>
@@ -73,19 +67,19 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-chart-bar"></i> <!-- Statistika -->
+                    <i class="fas fa-fw fa-chart-bar"></i>
                     <span>Statistika</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-file-alt"></i> <!-- Hisobot -->
+                    <i class="fas fa-fw fa-file-alt"></i>
                     <span>Hisobot</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-cogs"></i> <!-- Sozlamalar -->
+                    <i class="fas fa-fw fa-cogs"></i>
                     <span>Sozlamalar</span>
                 </a>
             </li>
@@ -102,5 +96,4 @@
                     </div>
                 </div>
             </li>
-            
         </ul>
