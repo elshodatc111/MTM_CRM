@@ -119,12 +119,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @forelse($comments as $comment)
                                         <tr>
-                                            <td>1</td>
-                                            <td>---</td>
-                                            <td>---</td>
-                                            <td>---</td>
+                                            <td>{{ $loop->index+1 }}</td>
+                                            <td>{{ $comment['comment'] }}</td>
+                                            <td>{{ $comment['name'] }}</td>
+                                            <td>{{ $comment['created_at'] }}</td>
                                         </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan=4 class="text-center">Ma'lumotlar mavjud emas.</td>
+                                        </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -421,8 +427,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="#">
+                    <form method="POST" action="{{ route('groups_update') }}">
                         @csrf
+                        <input type="hidden" name="guruh_id" value="{{ $about['id'] }}">
                         <div class="form-group">
                             <label for="name">Guruh nomi</label>
                             <input type="text" class="form-control" id="name" name="name" value="{{ $about['name'] }}" required>
@@ -490,9 +497,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('vacancy_child_comment_create') }}">
+                    <form method="POST" action="{{ route('groups_create_comment') }}">
                         @csrf
-                        <input type="hidden" name="vacancy_child_id" value="#">
+                        <input type="hidden" name="guruh_id" value="{{ $about['id'] }}">
                         <div class="form-group">
                             <label for="comment">Izoh matni</label>
                             <textarea class="form-control" id="comment" name="comment" required></textarea>

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\AttachTeacherRequest;
+use App\Http\Requests\StoreGuruhCommentRequest;
+use App\Http\Requests\UpdateGuruhRequest;
 use App\Services\GuruhService;
 //use App\Models\GuruhTecher;
 
@@ -32,13 +34,24 @@ class GroupController extends Controller{
         return redirect()->back()->with('success', 'Tarbiyachi guruhga biriktirildi.');
     }
 
+    public function storeComment(StoreGuruhCommentRequest $request){
+        $this->groupService->createCommentStore($request->validated());
+        return redirect()->back()->with('success', 'Kommentariya saqlandi.');
+    }
+
+    public function updateGroups(UpdateGuruhRequest $request){
+        $this->groupService->updateGroup($request->validated());
+        return redirect()->back()->with('success', 'Guruh malumotlari yangilandi.');
+    }
+
     public function show($id){
         $about = $this->groupService->show($id);
         $katta_tarbiyachi = $this->groupService->kattaTarbiyachi($id);
         $kichikTarbiyachi = $this->groupService->kichikTarbiyachi($id);
         $tarbiyachiHistory = $this->groupService->tarbiyachiHistory($id);
+        $comments = $this->groupService->groupComments($id);
         //dd($tarbiyachiHistory);
-        return view('group.show', compact('about','katta_tarbiyachi','kichikTarbiyachi','tarbiyachiHistory'));
+        return view('group.show', compact('about','katta_tarbiyachi','kichikTarbiyachi','tarbiyachiHistory','comments'));
     }
 
 

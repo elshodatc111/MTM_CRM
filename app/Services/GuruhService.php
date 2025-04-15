@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Guruh;
 use App\Models\GuruhTecher;
+use App\Models\GuruhComment;
 
 class GuruhService{
 
@@ -119,5 +120,33 @@ class GuruhService{
         return $array;
     }
 
+    public function groupComments(int $id){
+        $GuruhComment = GuruhComment::where('guruh_id',$id)->orderby('id','desc')->get();
+        $array = [];
+        foreach ($GuruhComment as $key => $value) {
+            $array[$key]['id'] = $value->id;
+            $array[$key]['comment'] = $value->comment;
+            $array[$key]['name'] = User::find($value->user_id)->name;
+            $array[$key]['created_at'] = $value->created_at;
+        }
+        return $array;
+    }
+
+    public function createCommentStore(array $data){
+        return GuruhComment::create([
+            'guruh_id' => $data['guruh_id'],
+            'comment' => $data['comment'],
+            'user_id' => auth()->user()->id,
+        ]);
+    }
+
+    public function updateGroup(array $data){
+        $GuruhComment = Guruh::find($data['guruh_id']);
+        $GuruhComment->name = strtoupper($data['name']);
+        $GuruhComment->amount = str_replace(" ","",$data['amount']);
+        $GuruhComment->katta_tarbiyachi = $data['katta_tarbiyachi'];
+        $GuruhComment->kichik_tarbiyachi = $data['kichik_tarbiyachi'];
+        return $GuruhComment->save();
+    }
 
 }
