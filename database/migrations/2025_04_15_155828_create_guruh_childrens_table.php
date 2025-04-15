@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('guruh_childrens', function (Blueprint $table) {
             $table->id();
             $table->foreignId('guruh_id')->constrained('guruhs')->onDelete('cascade');
-            $table->foreignId('children_id')->constrained('guruhs')->onDelete('cascade');
+            $table->foreignId('children_id')->constrained('children')->onDelete('cascade');
             $table->date('start_date');
             $table->string('start_description');
             $table->foreignId('start_user_id')->constrained('users')->onDelete('cascade');

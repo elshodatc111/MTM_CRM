@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/vacancy/child/create', [VacancyChildController::class, 'store'])->name('vacancy_child_create');
     Route::post('/vacancy/child/comment/create', [VacancyChildController::class, 'CommentStore'])->name('vacancy_child_comment_create');
     Route::post('/vacancy/child/cancel', [VacancyChildController::class, 'CancelStore'])->name('vacancy_child_cancel_create');
+    Route::post('/vacancy/child/success', [VacancyChildController::class, 'SuccessStory'])->name('vacancy_child_success_create');
     
     Route::get('/days', [DaysController::class, 'index'])->name('days');
     Route::post('/days/create/shanba', [DaysController::class, 'createShanba'])->name('createShanba');

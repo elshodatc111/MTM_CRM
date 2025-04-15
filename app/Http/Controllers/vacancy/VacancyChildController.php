@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PersonRequest;
 use App\Http\Requests\CommentChildRequest;
 use App\Http\Requests\CancelVacancyChildRequest;
+use App\Http\Requests\AcceptVacancyRequest;
 use App\Services\PersonService;
 use App\Models\VacancyChild;
-use App\Models\VacancyChildComment;
+use App\Models\VacancyChildComment; 
 
 class VacancyChildController extends Controller{
     protected $service;
@@ -40,13 +41,6 @@ class VacancyChildController extends Controller{
         return redirect()->back()->with('success', 'Maʼlumotlar saqlandi!');
     }
 
-    public function show($id){
-        $VacancyChild = VacancyChild::findOrFail($id);
-        $VacancyChildComment = VacancyChildComment::where('vacancy_child_id', $id)->orderBy('id', 'desc')->get();
-        //dd($VacancyChild);
-        return view('vacancy.child.show', compact('VacancyChild','VacancyChildComment'));
-    }
-
     public function CommentStore(CommentChildRequest $request){
         $this->service->CommentStore($request->validated());
         return back()->with('success', 'Izoh saqlandi!');
@@ -56,5 +50,22 @@ class VacancyChildController extends Controller{
         $this->service->CancelStore($request->validated());
         return back()->with('success', 'Bekor qilindi.');
     }
+
+
+
+    public function SuccessStory(AcceptVacancyRequest $request){ 
+        $this->service->SuccessStore($request->validated());
+        return redirect()->back()->with('success', 'Ariza muvaffaqiyatli qabul qilindi!');
+    }
+
+    public function show($id){
+        $VacancyChild = VacancyChild::findOrFail($id);
+        $VacancyChildComment = VacancyChildComment::where('vacancy_child_id', $id)->orderBy('id', 'desc')->get();
+        $groups = $this->service->getGroups();
+        //dd($groups);
+        return view('vacancy.child.show', compact('VacancyChild','VacancyChildComment','groups'));
+    }
+
+
 
 }

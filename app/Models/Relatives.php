@@ -11,7 +11,7 @@ class Relatives extends Model
 
     protected $fillable = [
         'children_id',
-        'kin',
+        'kim',
         'name',
         'phone1',
         'phone2',

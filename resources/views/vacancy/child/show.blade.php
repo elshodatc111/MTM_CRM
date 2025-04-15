@@ -191,20 +191,43 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="#">
+                    <form method="POST" action="{{ route('vacancy_child_success_create') }}">
                         @csrf
                         <input type="hidden" name="vacancy_child_id" value="{{ $VacancyChild['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Qabul qilinadigan guruh</label>
-                            <select name="" id="" class="form-control">
+                            <label for="guruh_id">Qabul qilinadigan guruh</label>
+                            <select name="guruh_id" class="form-control">
                                 <option value="">Tanlang</option>
+                                @foreach($groups as $group)
+                                    <option value="{{ $group['id'] }}">{{ $group['name'] }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="comment">Qabul qilish sababi</label>
-                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                            <label for="qarindosh">Yaqin qarindoshlari</label>
+                            <select name="qarindosh" class="form-control">
+                                <option value="Otasi">Otasi</option>
+                                <option value="Onasi">Onasi</option>
+                                <option value="Vasiy">Vasiy</option>
+                            </select>
+                        </div> 
+                        <div class="form-group">
+                            <label for="fio">Yaqin qarindoshi FIO</label>
+                            <input class="form-control" name="fio" required>
                         </div>
-                        <button type="submit" class="btn btn-success w-100">Saqlash</button>
+                        <div class="form-group">
+                            <label for="phone1">Yaqin qarindosh telefon raqami</label>
+                            <input class="form-control phone" value="{{ $VacancyChild['phone1'] }}" name="phone1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone2">Yaqin qarindosh qo'shimcha telefon raqami</label>
+                            <input class="form-control phone" value="{{ $VacancyChild['phone2'] }}" name="phone2" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="start_description">Qabul qilish sababi</label>
+                            <textarea class="form-control" id="start_description" name="start_description" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Qabul qilish</button>
                     </form>
                 </div>
             </div>
