@@ -280,6 +280,7 @@
                                     <th>Guruhga tark etdi</th>
                                     <th>Izoh</th>
                                     <th>Meneger</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -293,10 +294,17 @@
                                     <td>{{ $item['end_date'] }}</td>
                                     <td>{{ $item['end_description'] }}</td>
                                     <td>{{ $item['end_meneger_id'] }}</td>
+                                    <td>
+                                        @if($item['type']=='tarbiyachi')   
+                                            <span class="badge badge-primary">Tarbiyachi</span>
+                                        @else
+                                            <span class="badge badge-success">Yordamchi tarbiyachi</span>
+                                        @endif
+                                    </td>
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan=8 class="text-center">Ma'lumotlar topilmadi.</td>
+                                    <td colspan=9 class="text-center">Ma'lumotlar topilmadi.</td>
                                 </tr>
                                 @endforelse
                             </tbody>

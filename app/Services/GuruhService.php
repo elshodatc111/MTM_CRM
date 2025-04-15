@@ -167,6 +167,7 @@ class GuruhService{
         foreach ($GuruhTecher as $key => $value) {
             $array[$key]['user_id'] = $value->user_id;
             $array[$key]['tarbiyachi'] = User::find($value->user_id)->name;
+            $array[$key]['type'] = User::find($value->user_id)->type;
             $array[$key]['start_date'] = $value->start_date;
             $array[$key]['start_description'] = $value->start_description;
             $array[$key]['start_meneger'] = User::find($value->start_meneger_id)->name;
