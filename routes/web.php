@@ -45,6 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/groups/create', [GroupController::class, 'store'])->name('groups_create');
     Route::post('/groups/update', [GroupController::class, 'updateGroups'])->name('groups_update');
     Route::post('/groups/add/attach', [GroupController::class, 'attachTeacher'])->name('groups_add_attach');
+    Route::post('/groups/update/attach', [GroupController::class, 'updateTecherGroup'])->name('groups_update_attach');
+    Route::post('/groups/update/attachMin', [GroupController::class, 'updateTecherMinGroup'])->name('groups_update_min_attach');
     Route::post('/groups/create/comment', [GroupController::class, 'storeComment'])->name('groups_create_comment');
 
 });

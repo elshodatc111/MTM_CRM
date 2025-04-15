@@ -10,6 +10,64 @@ use App\Models\GuruhComment;
 
 class GuruhService{
 
+    protected function groupDeleteMinTecher($id, $end_description){
+        $GuruhTecher = GuruhTecher::where('guruh_id',$id)->where('status','true')->get();
+        foreach ($GuruhTecher as $key => $value) {
+            if(User::find($value->user_id)->type=='kichik_tarbiyachi'){
+                $guruh_techer = GuruhTecher::find($value->id);
+                $guruh_techer->status = 'false';
+                $guruh_techer->end_date = date("Y-m-d");
+                $guruh_techer->end_description = $end_description;
+                $guruh_techer->end_meneger_id = auth()->user()->id;
+                $guruh_techer->save();
+            }
+        }
+    }
+
+    public function updateTecherMinGroup(array $data){
+        $this->groupDeleteMinTecher($data['guruh_id'], $data['end_description']);
+        return GuruhTecher::create([
+            'guruh_id' => $data['guruh_id'],
+            'user_id' => $data['user_id'],
+            'start_date' => date("Y-m-d"),
+            'start_description' => $data['end_description'],
+            'start_meneger_id' => auth()->user()->id,
+            'end_date' => date("Y-m-d"),
+            'end_description' => '',
+            'end_meneger_id' => auth()->user()->id,
+            'status' => 'true',    
+        ]);
+    }
+
+    protected function groupDeleteBigTecher($id, $end_description){
+        $GuruhTecher = GuruhTecher::where('guruh_id',$id)->where('status','true')->get();
+        foreach ($GuruhTecher as $key => $value) {
+            if(User::find($value->user_id)->type=='tarbiyachi'){
+                $guruh_techer = GuruhTecher::find($value->id);
+                $guruh_techer->status = 'false';
+                $guruh_techer->end_date = date("Y-m-d");
+                $guruh_techer->end_description = $end_description;
+                $guruh_techer->end_meneger_id = auth()->user()->id;
+                $guruh_techer->save();
+            }
+        }
+    }
+
+    public function updateTecherGroup(array $data){
+        $this->groupDeleteBigTecher($data['guruh_id'], $data['end_description']);
+        return GuruhTecher::create([
+            'guruh_id' => $data['guruh_id'],
+            'user_id' => $data['user_id'],
+            'start_date' => date("Y-m-d"),
+            'start_description' => $data['end_description'],
+            'start_meneger_id' => auth()->user()->id,
+            'end_date' => date("Y-m-d"),
+            'end_description' => '',
+            'end_meneger_id' => auth()->user()->id,
+            'status' => 'true',    
+        ]);
+    }
+    
     public function getAll(){
         $Guruh = Guruh::get();
         $Guruhlar = [];
@@ -104,7 +162,7 @@ class GuruhService{
     }
 
     public function tarbiyachiHistory($id){
-        $GuruhTecher = GuruhTecher::where('guruh_id',$id)->get();
+        $GuruhTecher = GuruhTecher::where('guruh_id',$id)->orderby('id','desc')->get();
         $array = [];
         foreach ($GuruhTecher as $key => $value) {
             $array[$key]['user_id'] = $value->user_id;

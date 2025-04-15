@@ -349,12 +349,21 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('vacancy_child_comment_create') }}">
+                    <form method="POST" action="{{ route('groups_update_attach') }}">
                         @csrf
-                        <input type="hidden" name="vacancy_child_id" value="#">
+                        <input type="hidden" name="guruh_id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
-                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                            <label for="user_id">Tarbiyachini tanlang</label>
+                            <select name="user_id" required class="form-control">
+                                <option value="">Tanlang ...</option>
+                                @foreach($katta_tarbiyachi as $item)
+                                <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="end_description">Izoh matni</label>
+                            <textarea class="form-control" id="end_description" name="end_description" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>
@@ -398,18 +407,27 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Yordamchi tarbiyachi yangilash</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Yordamchi tarbiyachini yangilash</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('vacancy_child_comment_create') }}">
+                    <form method="POST" action="{{ route('groups_update_min_attach') }}">
                         @csrf
-                        <input type="hidden" name="vacancy_child_id" value="#">
+                        <input type="hidden" name="guruh_id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
-                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                            <label for="user_id">Tarbiyachini tanlang</label>
+                            <select name="user_id" required class="form-control">
+                                <option value="">Tanlang ...</option>
+                                @foreach($kichikTarbiyachi as $item)
+                                <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="end_description">Izoh matni</label>
+                            <textarea class="form-control" id="end_description" name="end_description" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>
