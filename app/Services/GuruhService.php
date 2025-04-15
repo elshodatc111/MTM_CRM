@@ -159,7 +159,7 @@ class GuruhService{
             'end_meneger_id'=>auth()->user()->id,
             'status'=>'true',
         ]);
-    }
+    } 
 
     public function tarbiyachiHistory($id){
         $GuruhTecher = GuruhTecher::where('guruh_id',$id)->orderby('id','desc')->get();

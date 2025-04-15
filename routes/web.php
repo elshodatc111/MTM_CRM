@@ -7,6 +7,7 @@ use App\Http\Controllers\vacancy\VacancyController;
 use App\Http\Controllers\vacancy\VacancyChildController;
 use App\Http\Controllers\Days\DaysController;
 use App\Http\Controllers\Group\GroupController;
+use App\Http\Controllers\Child\ChildController;
 
 Route::middleware('auth')->group(function () {
 
@@ -49,6 +50,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/groups/update/attach', [GroupController::class, 'updateTecherGroup'])->name('groups_update_attach');
     Route::post('/groups/update/attachMin', [GroupController::class, 'updateTecherMinGroup'])->name('groups_update_min_attach');
     Route::post('/groups/create/comment', [GroupController::class, 'storeComment'])->name('groups_create_comment');
+
+    Route::get('/child', [ChildController::class, 'index'])->name('child');
+    Route::get('/childs/{id}', [ChildController::class, 'show'])->name('child_show');
 
 });
 

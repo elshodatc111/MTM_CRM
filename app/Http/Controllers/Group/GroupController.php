@@ -61,7 +61,8 @@ class GroupController extends Controller{
         $kichikTarbiyachi = $this->groupService->kichikTarbiyachi($id);
         $tarbiyachiHistory = $this->groupService->tarbiyachiHistory($id);
         $comments = $this->groupService->groupComments($id);
-        //dd($tarbiyachiHistory);
+       // $bolalar = $this->groupService->bolalar($id);
+        //dd($bolalar);
         return view('group.show', compact('about','katta_tarbiyachi','kichikTarbiyachi','tarbiyachiHistory','comments'));
     }
     

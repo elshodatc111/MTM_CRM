@@ -283,7 +283,7 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody> 
                                 @forelse($tarbiyachiHistory as $item)
                                 <tr>
                                     <td>{{ $loop->index+1 }}</td>
