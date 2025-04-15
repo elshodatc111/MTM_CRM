@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/groups', [GroupController::class, 'index'])->name('groups');
     Route::get('/groups/{id}', [GroupController::class, 'show'])->name('groups_show');
     Route::post('/groups/create', [GroupController::class, 'store'])->name('groups_create');
+    Route::post('/groups/add/attach', [GroupController::class, 'attachTeacher'])->name('groups_add_attach');
 
 });
 

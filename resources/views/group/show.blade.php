@@ -59,11 +59,11 @@
                                     <h6 class="text-primary mb-3">Guruh ma'lumotlari</h6>
                                     <table class="table table-sm table-bordered table-striped" style="font-size: 13px;">
                                         <tbody>
-                                            <tr><th>Guruh</th><td class="text-end">Nomi</td></tr>
-                                            <tr><th>Guruh narxi</th><td class="text-end">Nomi</td></tr>
-                                            <tr><th>Tarbiyachiga to'lov</th><td class="text-end">Nomi</td></tr>
-                                            <tr><th>Yordamchi tarbiyachiga to'lov</th><td class="text-end">Nomi</td></tr>
-                                            <tr><th>Guruh ochilgan vaqt</th><td class="text-end">Nomi</td></tr>
+                                            <tr><th>Guruh</th><td class="text-end">{{ $about['name'] }}</td></tr>
+                                            <tr><th>Guruh narxi</th><td class="text-end">{{ $about['amount'] }} so'm</td></tr>
+                                            <tr><th>Tarbiyachiga to'lov</th><td class="text-end">{{ $about['katta_amount'] }} %</td></tr>
+                                            <tr><th>Yordamchi tarbiyachiga to'lov</th><td class="text-end">{{ $about['kichik_amount'] }} %</td></tr>
+                                            <tr><th>Guruh ochilgan vaqt</th><td class="text-end">{{ $about['created_at'] }}</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -75,11 +75,11 @@
                                     <h6 class="text-success mb-3">Guruh tarkibi</h6>
                                     <table class="table table-sm table-bordered table-striped" style="font-size: 13px;">
                                         <tbody>
-                                            <tr><th>Bolalar soni</th><td class="text-end">15</td></tr>
-                                            <tr><th>Tarbiyachi</th><td class="text-end">15</td></tr>
-                                            <tr><th>Yordamchi tarbiyachi</th><td class="text-end">15</td></tr>
-                                            <tr><th>Yangilangan vaqt</th><td class="text-end">Nomi</td></tr>
-                                            <tr><th>Meneger</th><td class="text-end">Nomi</td></tr>
+                                            <tr><th>Bolalar soni</th><td class="text-end">{{ $about['bolalar'] }}</td></tr>
+                                            <tr><th>Tarbiyachi</th><td class="text-end">{{ $about['katta_tarbiyachi'] }}</td></tr>
+                                            <tr><th>Yordamchi tarbiyachi</th><td class="text-end">{{ $about['kichik_tarbiyachi'] }}</td></tr>
+                                            <tr><th>Meneger</th><td class="text-end">{{ $about['meneger'] }}</td></tr>
+                                            <tr><th>Yangilangan vaqt</th><td class="text-end">{{ $about['updated_at'] }}</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -89,10 +89,16 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <div class="d-grid gap-2">
-                                        <button class="btn btn-outline-primary w-100 mb-1" data-toggle="modal" data-target="#yangitarbiyachi"> <i class="fa fa-user-plus"></i> Tarbiyachi biriktirish</button>
-                                        <button class="btn btn-outline-primary w-100 mb-1" data-toggle="modal" data-target="#changertarbiyachi"> <i class="fa fa-repeat"></i> Tarbiyachini almashtirish</button>
-                                        <button class="btn btn-outline-success w-100 mb-1" data-toggle="modal" data-target="#yangiyordamchitarbiyachi"> <i class="fa fa-user-plus"></i> Yordamchi tarbiyachini biriktirish</button>
-                                        <button class="btn btn-outline-success w-100 mb-1" data-toggle="modal" data-target="#changeyordamchitarbiyachi"> <i class="fa fa-repeat"></i> Yordamchi tarbiyachini almashtirish</button>
+                                        @if($about['katta_tarbiyachi']=='Tanlanmagan')
+                                            <button class="btn btn-outline-primary w-100 mb-1" data-toggle="modal" data-target="#yangitarbiyachi"> <i class="fa fa-user-plus"></i> Tarbiyachi biriktirish</button>
+                                        @else
+                                            <button class="btn btn-outline-primary w-100 mb-1" data-toggle="modal" data-target="#changertarbiyachi"> <i class="fa fa-repeat"></i> Tarbiyachini almashtirish</button>
+                                        @endif
+                                        @if($about['kichik_tarbiyachi']=='Tanlanmagan')
+                                            <button class="btn btn-outline-success w-100 mb-1" data-toggle="modal" data-target="#yangiyordamchitarbiyachi"> <i class="fa fa-user-plus"></i> Yordamchi tarbiyachini biriktirish</button>
+                                        @else
+                                            <button class="btn btn-outline-success w-100 mb-1" data-toggle="modal" data-target="#changeyordamchitarbiyachi"> <i class="fa fa-repeat"></i> Yordamchi tarbiyachini almashtirish</button>
+                                        @endif
                                         <button class="btn btn-outline-warning w-100 mb-1" data-toggle="modal" data-target="#taxrirlash"> <i class="fa fa-pencil-square-o"></i> Guruhni tahrirlash</button>
                                         <button class="btn btn-outline-danger w-100 mb-1" data-toggle="modal" data-target="#ochirishchild"> <i class="fa fa-user-times"></i> Guruhdan bolani o'chirish</button>
                                         <button class="btn btn-outline-info w-100 mb-1" data-toggle="modal" data-target="#izohqoldirish"> <i class="fa fa-commenting"></i> Guruh haqida izoh qoldirish</button>
@@ -271,16 +277,22 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @forelse($tarbiyachiHistory as $item)
                                 <tr>
-                                    <td>1</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
+                                    <td>{{ $loop->index+1 }}</td>
+                                    <td style="text-align:left"><a href="{{ $item['user_id'] }}">{{ $item['tarbiyachi'] }}</a></td>
+                                    <td>{{ $item['start_date'] }}</td>
+                                    <td>{{ $item['start_description'] }}</td>
+                                    <td>{{ $item['start_meneger'] }}</td>
+                                    <td>{{ $item['end_date'] }}</td>
+                                    <td>{{ $item['end_description'] }}</td>
+                                    <td>{{ $item['end_meneger_id'] }}</td>
                                 </tr>
+                                @empty
+                                <tr>
+                                    <td colspan=8 class="text-center">Ma'lumotlar topilmadi.</td>
+                                </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -299,12 +311,21 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('vacancy_child_comment_create') }}">
+                    <form method="POST" action="{{ route('groups_add_attach') }}">
                         @csrf
-                        <input type="hidden" name="vacancy_child_id" value="#">
+                        <input type="hidden" name="guruh_id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
-                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                            <label for="comment">Tarbiyachini tanlang</label>
+                            <select name="user_id" required class="form-control">
+                                <option value="">Tanlang ...</option>
+                                @foreach($katta_tarbiyachi as $item)
+                                <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="start_description">Biriktirish haqida</label>
+                            <textarea class="form-control" id="start_description" name="start_description" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>
@@ -345,12 +366,21 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('vacancy_child_comment_create') }}">
+                    <form method="POST" action="{{ route('groups_add_attach') }}">
                         @csrf
-                        <input type="hidden" name="vacancy_child_id" value="#">
+                        <input type="hidden" name="guruh_id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
-                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                            <label for="comment">Tarbiyachini tanlang</label>
+                            <select name="user_id" required class="form-control">
+                                <option value="">Tanlang ...</option>
+                                @foreach($kichikTarbiyachi as $item)
+                                <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="start_description">Biriktirish haqida</label>
+                            <textarea class="form-control" id="start_description" name="start_description" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>
@@ -391,15 +421,38 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('vacancy_child_comment_create') }}">
+                    <form method="POST" action="#">
                         @csrf
-                        <input type="hidden" name="vacancy_child_id" value="#">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
-                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                            <label for="name">Guruh nomi</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ $about['name'] }}" required>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Saqlash</button>
+                        <div class="form-group">
+                            <label for="amount">Guruh narxi</label>
+                            <input type="text" class="form-control" id="amount" name="amount" value="{{ number_format($about['amount'], 0, '.', ' ') }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="katta_tarbiyachi">Tarbiyachiga to'lov (Barcha to'lovlardan %)</label>
+                            <input type="number" min=0 max=100 class="form-control" name="katta_tarbiyachi" value="{{ $about['katta_amount'] }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="kichik_tarbiyachi">Yordamchi tarbiyachiga to'lov (Barcha to'lovlardan %)</label>
+                            <input type="number" min=0 max=100 class="form-control" name="kichik_tarbiyachi" value="{{ $about['kichik_amount'] }}" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">O'zgarishlarni saqlash</button>
                     </form>
+                    <script>
+                        const amountInput = document.getElementById('amount');
+                        amountInput.addEventListener('input', function (e) {
+                            let value = this.value.replace(/\s/g, ''); 
+                            value = value.replace(/\D/g, ''); 
+                            if (value.length > 1 && value.startsWith('0')) {
+                                value = value.replace(/^0+/, '');
+                            }
+                            const formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                            this.value = formattedValue;
+                        });
+                    </script>
                 </div>
             </div>
         </div>

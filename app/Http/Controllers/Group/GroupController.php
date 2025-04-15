@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Group;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreGroupRequest;
+use App\Http\Requests\AttachTeacherRequest;
 use App\Services\GuruhService;
+//use App\Models\GuruhTecher;
 
 class GroupController extends Controller{
     
@@ -25,11 +27,18 @@ class GroupController extends Controller{
         return redirect()->back()->with('success', 'Guruh muvaffaqiyatli saqlandi!');
     }
 
+    public function attachTeacher(AttachTeacherRequest $request){
+        $this->groupService->addGroupBigAttach($request->validated());
+        return redirect()->back()->with('success', 'Tarbiyachi guruhga biriktirildi.');
+    }
+
     public function show($id){
-        return view('group.show', [
-            'group' => $this->groupService->getAll(),
-            'id' => $id,
-        ]);
+        $about = $this->groupService->show($id);
+        $katta_tarbiyachi = $this->groupService->kattaTarbiyachi($id);
+        $kichikTarbiyachi = $this->groupService->kichikTarbiyachi($id);
+        $tarbiyachiHistory = $this->groupService->tarbiyachiHistory($id);
+        //dd($tarbiyachiHistory);
+        return view('group.show', compact('about','katta_tarbiyachi','kichikTarbiyachi','tarbiyachiHistory'));
     }
 
 
