@@ -1,17 +1,17 @@
 @extends('layouts.app02')
 
-@section('title', 'Vakansiya')
+@section('title', 'Aktiv bolalar')
 
 @section('content')
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Vakansiya</h1>
+            <h1 class="h3 mb-0 text-gray-800">Bola haida</h1>
         </div>
 
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Bosh sahifa</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('vacancy_child') }}">Bolalar jo'rnali</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('child') }}">Aktiv bolalar</a></li>
                 <li class="breadcrumb-item">Bola haqida</li>
             </ol>
         </nav>
@@ -61,25 +61,32 @@
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div class="row">
                             <div class="col-lg-4">
-                                <h5 class="text-primary w-100 text-center mb-3">Bolaning FIO</h5>
+                                <h5 class="text-primary w-100 text-center mb-3">{{ $about['name'] }}</h5>
                                 <table class="table table-sm table-bordered table-striped" style="font-size: 16px;">
                                     <tbody>
-                                        <tr><th>Yashash manzili</th><td style="text-align:right">Qarshi shaxar</td></tr>
-                                        <tr><th>Tug'ilgan kuni</th><td style="text-align:right">Qarshi shaxar</td></tr>
-                                        <tr><th>Ro'yhatga olindi</th><td style="text-align:right">Qarshi shaxar</td></tr>
-                                        <tr><th>Oxirgi yangilanish</th><td style="text-align:right">Qarshi shaxar</td></tr>
-                                        <tr><th>Meneger</th><td style="text-align:right">Qarshi shaxar</td></tr>
+                                        <tr><th>Yashash manzili</th><td style="text-align:right">{{ $about['address'] }}</td></tr>
+                                        <tr><th>Tug'ilgan kuni</th><td style="text-align:right">{{ $about['birthday'] }}</td></tr>
+                                        <tr><th>Ro'yhatga olindi</th><td style="text-align:right">{{ $about['created_at'] }}</td></tr>
+                                        <tr><th>Oxirgi yangilanish</th><td style="text-align:right">{{ $about['updated_at'] }}</td></tr>
                                     </tbody>
                                 </table>
                             </div>
                             <div class="col-lg-4">
-                                <h5 class="text-primary w-100 text-center mb-3">Balans: 15 000 so'm</h5>
+                                <h5 class="text-primary w-100 text-center mb-3">Balans: 
+                                    @if($about['balans']>0)
+                                        <span class="text-success">{{ number_format($about['balans'], 0, ',', ' ') }}
+                                    @elseif($about['balans']==0)
+                                        {{ number_format($about['balans'], 0, ',', ' ') }}       
+                                    @else
+                                        <span class="text-danger">{{ number_format($about['balans'], 0, ',', ' ') }}
+                                    @endif
+                                    so'm</h5>
                                 <table class="table table-sm table-bordered table-striped" style="font-size: 16px;">
                                     <tbody>
-                                        <tr><th>Guruh</th><td style="text-align:right">Qarshi shaxar</td></tr>
-                                        <tr><th>Ro'yhatga olindi</th><td style="text-align:right">Qarshi shaxar</td></tr>
-                                        <tr><th>Menejer</th><td style="text-align:right">Qarshi shaxar</td></tr>
-                                        <tr><th>Ro'yhatga olish haqida</th><td style="text-align:right">Qarshi shaxar</td></tr>
+                                        <tr><th>Guruh</th><td style="text-align:right"><a href="{{ route('groups_show', $groupabout['guruh_id'] )}}">{{ $groupabout['guruh'] }}</a></td></tr>
+                                        <tr><th>Ro'yhatga olindi</th><td style="text-align:right">{{ $groupabout['start'] }}</td></tr>
+                                        <tr><th>Menejer</th><td style="text-align:right">{{ $groupabout['meneger'] }}</td></tr>
+                                        <tr><th>Ro'yhatga olish haqida</th><td style="text-align:right">{{ $groupabout['about'] }}</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -166,11 +173,35 @@
                                         <th>Izoh</th>
                                         <th>Meneger</th>
                                         <th>Guruhdan o'chirildi</th>
-                                        <th>Status</th>
+                                        <th>Guruhdan o'chirish sababi</th>
                                         <th>Meneger</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @forelse($groupHistory as $item)
+                                        <tr>
+                                            <td>{{ $loop->index+1 }}</td>
+                                            <td>{{ $item['guruh_name'] }}</td>
+                                            <td>{{ $item['start_date'] }}</td>
+                                            <td>{{ $item['start_description'] }}</td>
+                                            <td>{{ $item['start_user_id'] }}</td>
+                                            <td>{{ $item['end_date'] }}</td>
+                                            <td>{{ $item['end_description'] }}</td>
+                                            <td>{{ $item['end_user_id'] }}</td>
+                                            <td>
+                                                @if($item['status'] == 'true')
+                                                    Aktiv 
+                                                @else
+                                                    Tark etgan 
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan=9 class="text-center">Malumot topilmadi</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

@@ -61,10 +61,10 @@
                                 <td class="text-start" style="text-align:left"><a href="{{ route('child_show_no',$child->id) }}">{{ $child->name }}</a></td>
                                 <td>{{ $child->created_at->format('Y-m-d') }}</td>
                                 <td>
-                                    @if ($child->balance >= 0)
-                                        <span class="text-success">{{ number_format($child->balance, 0, '.', ' ') }} so'm</span>
+                                    @if ($child->balans >= 0)
+                                        <span class="text-success">{{ number_format($child->balans, 0, '.', ' ') }} so'm</span>
                                     @else   
-                                        <span class="text-danger">{{ number_format($child->balance, 0, '.', ' ') }} so'm</span>
+                                        <span class="text-danger">{{ number_format($child->balans, 0, '.', ' ') }} so'm</span>
                                     @endif    
                                 </td>
                             </tr>

@@ -5,40 +5,33 @@ namespace App\Http\Controllers\Child;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Childreen;
+use App\Models\GuruhChildren;
+use App\Services\ChildService;
 
 class ChildController extends Controller{
+    protected $childService;
+
+    public function __construct(ChildService $childService){
+        $this->childService = $childService;
+    }
+
     public function index(Request $request){
-        $query = Childreen::query()->where('status', 'true');
-        if ($request->filled('search')) {
-            $request->validate([
-                'search' => 'string|max:100',
-            ]);
-            $search = $request->input('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%");
-            });
-        }
-        $Childreen = $query->orderBy('id', 'desc')->paginate(10)->withQueryString();
-        return view('child.index',compact('Childreen'));
+        $Childreen = $this->childService->getFilteredChildren($request);
+        //dd($Childreen);
+        return view('child.index', compact('Childreen'));
     }
 
     public function show($id){
-        return view('child.index_show');
+        $about = $this->childService->getAboutChildren($id);
+        $groupabout = $this->childService->getAboutGroupChildren($id);
+        $groupHistory = $this->childService->getHistoryGroupChildren($id);
+        //dd($groupabout);
+        return view('child.index_show',compact('about','groupabout','groupHistory'));
     }
 
     public function noindex(Request $request){
-        $query = Childreen::query()->where('status', 'cancel');
-        if ($request->filled('search')) {
-            $request->validate([
-                'search' => 'string|max:100',
-            ]);
-            $search = $request->input('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%");
-            });
-        }
-        $Childreen = $query->orderBy('id', 'desc')->paginate(10)->withQueryString();
-        return view('child.no_index',compact('Childreen'));
+        $Childreen = $this->childService->getCanceledChildren($request);
+        return view('child.no_index', compact('Childreen'));
     }
 
     public function noshow($id){
