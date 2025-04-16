@@ -18,7 +18,7 @@
                     <span>Guruhlar</span>
                 </a>
             </li>
-            <li class="nav-item {{ request()->routeIs(['child','child_show']) ? 'active' : '' }}">
+            <li class="nav-item {{ request()->routeIs(['child','nochild','child_show']) ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('child') }}">
                     <i class="fas fa-fw fa-smile"></i>
                     <span>Bolalar</span>
