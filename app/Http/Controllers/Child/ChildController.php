@@ -23,7 +23,7 @@ class ChildController extends Controller{
     }
 
     public function show($id){
-        dd("ChildController");
+        return view('child.index_show');
     }
 
     public function noindex(Request $request){
