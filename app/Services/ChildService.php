@@ -3,12 +3,43 @@ namespace App\Services;
 
 use App\Models\Childreen;
 use Illuminate\Http\Request;
+use App\Services\ChildService;
 use App\Models\User;
 use App\Models\Guruh;
 use App\Models\GuruhChildren;
-use App\Services\ChildService;
+use App\Models\Relatives;
 
 class ChildService{
+
+    public function addRelatives(array $data){
+        return Relatives::create([
+            'children_id' => $data['child_id'],
+            'kim' => $data['kim'],
+            'name' => $data['name'],
+            'phone1' => $data['phone1'],
+            'phone2' => $data['phone2'],
+            'user_id' => auth()->user()->id,
+        ]);
+    }
+
+    public function deleteRelatives($id){
+        $Relatives = Relatives::find($id);
+        return $Relatives->delete();
+    }
+
+    public function getRelatives(int $id){
+        $Relatives = Relatives::where('children_id',$id)->get();
+        $array = [];
+        foreach ($Relatives as $key => $value) {
+            $array[$key]['id'] = $value->id;
+            $array[$key]['kim'] = $value->kim;
+            $array[$key]['name'] = $value->name;
+            $array[$key]['phone1'] = $value->phone1;
+            $array[$key]['phone2'] = $value->phone2;
+            $array[$key]['meneger'] = User::find($value['user_id'])->name;
+        }
+        return $array;
+    }
 
     public function getFilteredChildren(Request $request){
         $query = Childreen::query()->where('status', 'true');
@@ -45,7 +76,7 @@ class ChildService{
 
     public function getAboutGroupChildren($id){
         $GuruhChildren = GuruhChildren::where('children_id',$id)->where('status','true')->first();
-        return [
+        return [ 
             'guruh_id' => $GuruhChildren['guruh_id'],
             'guruh' => Guruh::find($GuruhChildren['guruh_id'])->name,
             'start' => $GuruhChildren['start_date'],

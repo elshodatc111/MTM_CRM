@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Child;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Childreen;
-use App\Models\GuruhChildren;
 use App\Services\ChildService;
+use App\Http\Requests\StoreGuardianRequest;
 
 class ChildController extends Controller{
     protected $childService;
@@ -25,9 +24,25 @@ class ChildController extends Controller{
         $about = $this->childService->getAboutChildren($id);
         $groupabout = $this->childService->getAboutGroupChildren($id);
         $groupHistory = $this->childService->getHistoryGroupChildren($id);
-        //dd($groupabout);
-        return view('child.index_show',compact('about','groupabout','groupHistory'));
+        $Relatives = $this->childService->getRelatives($id);
+        //dd($Relatives);
+        return view('child.index_show',compact('about','groupabout','groupHistory','Relatives'));
     }
+
+    public function deleteRelatives(Request $request){
+        $this->childService->deleteRelatives($request->id);
+        return redirect()->back()->with('success', 'Tarbiyalanuvchi vasiysi o\'chirildi.');
+    }
+
+    public function addRelatives(StoreGuardianRequest $request){
+        $this->childService->addRelatives($request->validated());
+        return redirect()->back()->with('success', 'Yangi vasiy qo\'shildi.');
+    }
+
+
+
+
+
 
     public function noindex(Request $request){
         $Childreen = $this->childService->getCanceledChildren($request);

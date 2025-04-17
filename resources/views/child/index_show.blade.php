@@ -71,7 +71,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4"> 
                                 <h5 class="text-primary w-100 text-center mb-3">Balans: 
                                     @if($about['balans']>0)
                                         <span class="text-success">{{ number_format($about['balans'], 0, ',', ' ') }}
@@ -153,10 +153,32 @@
                                         <th>FIO</th>
                                         <th>Telefon raqami</th>
                                         <th>Qo'shimcha telefon raqami</th>
+                                        <th>Meneger</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @forelse($Relatives as $item)
+                                        <tr>
+                                            <td>{{ $loop->index+1 }}</td>
+                                            <td>{{ $item['kim'] }}</td>
+                                            <td>{{ $item['name'] }}</td>
+                                            <td>{{ $item['phone1'] }}</td>
+                                            <td>{{ $item['phone2'] }}</td>
+                                            <td>{{ $item['meneger'] }}</td>
+                                            <td>
+                                                <form action="{{ route('groups_delete_relatives') }}" method="post">
+                                                    @csrf 
+                                                    <input type="hidden" name="id" value="{{ $item['id'] }}">
+                                                    <button type="submit" class="btn btn-danger px-1 py-0"><i class="fas fa-trash-alt"></i></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty      
+                                        <tr>
+                                            <td colspan=7 class="text-center">Malumot topilmadi</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -421,12 +443,24 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="#">
+                    <form method="POST" action="{{ route('groups_add_relatives') }}">
                         @csrf
-                        <input type="hidden" name="child_id" value="#">
+                        <input type="hidden" name="child_id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
-                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                            <label for="kim">Yangi vasiy kim (Otasi,Onasi,Yaqin qarindoshi)</label>
+                            <input type="text" required name="kim" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">FIO</label>
+                            <input type="text" required name="name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone1">Telefon raqami</label>
+                            <input type="text" required name="phone1" value="+998" class="form-control phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone2">Qo'shimcha telefon raqami</label>
+                            <input type="text" required name="phone2" value="+998" class="form-control phone">
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>

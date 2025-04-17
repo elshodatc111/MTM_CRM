@@ -53,10 +53,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/groups/create/comment', [GroupController::class, 'storeComment'])->name('groups_create_comment');
 
     Route::get('/child', [ChildController::class, 'index'])->name('child');
-    Route::get('/nochild', [ChildController::class, 'noindex'])->name('nochild');
     Route::get('/childs/{id}', [ChildController::class, 'show'])->name('child_show');
+    Route::post('/child/delete/parents', [ChildController::class, 'deleteRelatives'])->name('groups_delete_relatives');
+    Route::post('/child/add/parents', [ChildController::class, 'addRelatives'])->name('groups_add_relatives');
+
+    Route::get('/nochild', [ChildController::class, 'noindex'])->name('nochild');
     Route::get('/childsno/{id}', [ChildController::class, 'noshow'])->name('child_show_no');
 
+
+    
 });
 
 require __DIR__.'/auth.php';
