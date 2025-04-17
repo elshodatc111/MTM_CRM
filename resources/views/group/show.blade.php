@@ -145,19 +145,35 @@
                                 <tr>
                                     <th>#</th>
                                     <th>FIO</th>
+                                    <th>Balans</th>
                                     <th>Guruhga qo'shildi</th>
                                     <th>Izoh</th>
                                     <th>Meneger</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @forelse($children as $item)    
                                 <tr>
-                                    <td>1</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
+                                    <td>{{ $loop->index+1 }}</td>
+                                    <td style="text-align:left"><a href="{{ route('child_show',$item['id']) }}">{{ $item['name'] }}</a></td>
+                                    <td>
+                                        @if($item['balans']>0)
+                                            <span class="text-success">{{ number_format($item['balans'], 0, ',', ' ') }}
+                                        @elseif($item['balans']==0)
+                                            {{ number_format($item['balans'], 0, ',', ' ') }}       
+                                        @else
+                                            <span class="text-danger">{{ number_format($item['balans'], 0, ',', ' ') }}
+                                        @endif
+                                    </td>
+                                    <td>{{ $item['start_date'] }}</td>
+                                    <td>{{ $item['start_description'] }}</td>
+                                    <td>{{ $item['meneger'] }}</td>
                                 </tr>
+                                @empty
+                                <tr>
+                                    <td colspan=6 class="text-center">Ma'lumotlar topilmadi.</td>
+                                </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -168,6 +184,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>FIO</th>
+                                    <th>Balans</th>
                                     <th>Guruhga qo'shildi</th>
                                     <th>Izoh</th>
                                     <th>Meneger</th>
@@ -177,16 +194,31 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                </tr>
+                                @forelse($childrenCancel as $item)    
+                                    <tr>
+                                        <td>{{ $loop->index+1 }}</td>
+                                        <td style="text-align:left"><a href="{{ route('child_show',$item['id']) }}">{{ $item['name'] }}</a></td>
+                                        <td>
+                                            @if($item['balans']>0)
+                                                <span class="text-success">{{ number_format($item['balans'], 0, ',', ' ') }}
+                                            @elseif($item['balans']==0)
+                                                {{ number_format($item['balans'], 0, ',', ' ') }}       
+                                            @else
+                                                <span class="text-danger">{{ number_format($item['balans'], 0, ',', ' ') }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $item['start_date'] }}</td>
+                                        <td>{{ $item['start_description'] }}</td>
+                                        <td>{{ $item['meneger'] }}</td>
+                                        <td>{{ $item['end_date'] }}</td>
+                                        <td>{{ $item['end_description'] }}</td>
+                                        <td>{{ $item['menegerCancel'] }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan=9 class="text-center">Ma'lumotlar topilmadi.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -266,7 +298,6 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="tarbiyachi" role="tabpanel" aria-labelledby="contact-tab">
-                    
                     <div class="table-responsive mt-3">
                         <h5>Tarbiyachilar tarixi</h5>
                         <table class="table table-bordered text-center" style="font-size: 12px;">
@@ -494,20 +525,29 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">bolani o'chirish</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Guruhdan bolani o'chirish</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('vacancy_child_comment_create') }}">
+                    <form method="POST" action="{{ route('groups_delete_attach') }}">
                         @csrf
-                        <input type="hidden" name="vacancy_child_id" value="#">
+                        <input type="hidden" name="guruh_id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
-                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                            <label for="children_id">O'chiriladigan bolani tanlang</label>
+                            <select name="children_id" required class="form-control">
+                                <option value="">Tablang...</option>
+                                @foreach($children as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['name'] }} Balans: {{ $item['balans'] }} so'm</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Saqlash</button>
+                        <div class="form-group">
+                            <label for="end_description">O'chirish uchun sabab</label>
+                            <textarea class="form-control" id="end_description" name="end_description" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100">O'chirish</button>
                     </form>
                 </div>
             </div>

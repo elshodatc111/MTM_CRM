@@ -9,8 +9,10 @@ use App\Http\Requests\AttachTeacherRequest;
 use App\Http\Requests\StoreGuruhCommentRequest;
 use App\Http\Requests\UpdateGuruhRequest;
 use App\Http\Requests\UpdateTarbiyachiRequest;
+use App\Http\Requests\RemoveChildRequest;
 use App\Services\GuruhService;
-//use App\Models\GuruhTecher;
+
+//use App\Models\GuruhTecher; 
 
 class GroupController extends Controller{
     
@@ -55,15 +57,22 @@ class GroupController extends Controller{
         return redirect()->back()->with('success', 'Tarbiyachi yangilandi.');
     }
 
+    public function removeChild(RemoveChildRequest $request){
+        $this->groupService->removeChild($request->validated());
+        return redirect()->back()->with('success', 'Bola guruhdan o‘chirildi.');
+    }
+
     public function show($id){
         $about = $this->groupService->show($id);
         $katta_tarbiyachi = $this->groupService->kattaTarbiyachi($id);
         $kichikTarbiyachi = $this->groupService->kichikTarbiyachi($id);
         $tarbiyachiHistory = $this->groupService->tarbiyachiHistory($id);
         $comments = $this->groupService->groupComments($id);
-       // $bolalar = $this->groupService->bolalar($id);
-        //dd($bolalar);
-        return view('group.show', compact('about','katta_tarbiyachi','kichikTarbiyachi','tarbiyachiHistory','comments'));
+        $children = $this->groupService->children($id);
+        $childrenCancel = $this->groupService->childrenCancel($id);
+        
+        //dd($children);
+        return view('group.show', compact('about','katta_tarbiyachi','kichikTarbiyachi','tarbiyachiHistory','comments','children','childrenCancel'));
     }
     
 

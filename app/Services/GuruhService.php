@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Guruh;
 use App\Models\GuruhTecher;
 use App\Models\GuruhComment;
+use App\Models\GuruhChildren;
+use App\Models\Childreen;
 
 class GuruhService{
 
@@ -77,7 +79,7 @@ class GuruhService{
             $Guruhlar[$key]['amount'] = number_format($value->amount, 0, '.', ' ');
             $Guruhlar[$key]['katta_tarbiyachi'] = $value->katta_tarbiyachi;
             $Guruhlar[$key]['kichik_tarbiyachi'] = $value->kichik_tarbiyachi;
-            $Guruhlar[$key]['user_count'] = 0;
+            $Guruhlar[$key]['user_count'] = GuruhChildren::where('guruh_id',$value->id)->where('status','true')->count();
         }
         return $Guruhlar;
     }
@@ -147,7 +149,7 @@ class GuruhService{
         return $Tarbiyachilar;
     }
 
-    public function addGroupBigAttach(array $data){
+    public function addGroupBigAttach(array $data){ 
         return GuruhTecher::create([
             'guruh_id'=>$data['guruh_id'],
             'user_id'=>$data['user_id'],
@@ -206,6 +208,49 @@ class GuruhService{
         $GuruhComment->katta_tarbiyachi = $data['katta_tarbiyachi'];
         $GuruhComment->kichik_tarbiyachi = $data['kichik_tarbiyachi'];
         return $GuruhComment->save();
+    }
+
+    public function children(int $id){ 
+        $children = GuruhChildren::where('guruh_id',$id)->where('status','true')->get();
+        $child = [];
+        foreach ($children as $key => $value) {
+            $child[$key]['id'] = $value->children_id;
+            $child[$key]['name'] = Childreen::find($value->children_id)->name;
+            $child[$key]['balans'] = Childreen::find($value->children_id)->balans;
+            $child[$key]['start_date'] = $value->start_date;
+            $child[$key]['start_description'] = $value->start_description;
+            $child[$key]['meneger'] = User::where('id',$value->start_user_id)->first()->name;
+        }
+        return $child;
+    }
+
+    public function childrenCancel(int $id){ 
+        $children = GuruhChildren::where('guruh_id',$id)->where('status','false')->get();
+        $child = [];
+        foreach ($children as $key => $value) {
+            $child[$key]['id'] = $value->children_id;
+            $child[$key]['name'] = Childreen::find($value->children_id)->name;
+            $child[$key]['balans'] = Childreen::find($value->children_id)->balans;
+            $child[$key]['start_date'] = $value->start_date;
+            $child[$key]['start_description'] = $value->start_description;
+            $child[$key]['meneger'] = User::where('id',$value->start_user_id)->first()->name;
+            $child[$key]['end_date'] = $value->end_date;
+            $child[$key]['end_description'] = $value->end_description;
+            $child[$key]['menegerCancel'] = User::where('id',$value->end_user_id)->first()->name;
+        }
+        return $child;
+    }
+
+    public function removeChild(array $data){
+        $GuruhChildren = GuruhChildren::where('guruh_id',$data['guruh_id'])->where('children_id',$data['children_id'])->where('status','true')->first();
+        $GuruhChildren->status = 'false';
+        $GuruhChildren->end_date = date("Y-m-d");
+        $GuruhChildren->end_description = $data['end_description'];
+        $GuruhChildren->end_user_id = auth()->user()->id;
+        $GuruhChildren->save();
+        $Childreen = Childreen::find($data['children_id']);
+        $Childreen->status = 'cancel';
+        return $Childreen->save();
     }
 
 }
