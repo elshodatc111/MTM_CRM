@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\ChildService;
 use App\Http\Requests\StoreGuardianRequest;
+use App\Http\Requests\UpdateChildRequest;
+use App\Http\Requests\ChangeGroupRequest;
+use App\Http\Requests\LeaveKindergartenRequest;
 
 class ChildController extends Controller{
     protected $childService;
@@ -25,8 +28,9 @@ class ChildController extends Controller{
         $groupabout = $this->childService->getAboutGroupChildren($id);
         $groupHistory = $this->childService->getHistoryGroupChildren($id);
         $Relatives = $this->childService->getRelatives($id);
-        //dd($Relatives);
-        return view('child.index_show',compact('about','groupabout','groupHistory','Relatives'));
+        $newGroup = $this->childService->newGroup($id);
+        //dd($newGroup);
+        return view('child.index_show',compact('about','groupabout','groupHistory','Relatives','newGroup'));
     }
 
     public function deleteRelatives(Request $request){
@@ -39,8 +43,20 @@ class ChildController extends Controller{
         return redirect()->back()->with('success', 'Yangi vasiy qo\'shildi.');
     }
 
+    public function childUpdate(UpdateChildRequest $request){
+        $this->childService->childUpdate($request->validated());
+        return redirect()->back()->with('success', 'Bola ma’lumotlari yangilandi.');
+    }
 
+    public function childChangeGroup(ChangeGroupRequest $request){
+        $this->childService->changeGroups($request->validated());
+        return redirect()->back()->with('success', 'Bola yangi guruhga o‘tkazildi.');
+    }
 
+    public function leave(LeaveKindergartenRequest $request){
+        $this->childService->LeaveKindergartenRequest($request->validated());
+        return back()->with('success', 'Bola bog‘chani tark etdi.');
+    }
 
 
 

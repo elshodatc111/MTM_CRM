@@ -77,11 +77,11 @@ class ChildService{
     public function getAboutGroupChildren($id){
         $GuruhChildren = GuruhChildren::where('children_id',$id)->where('status','true')->first();
         return [ 
-            'guruh_id' => $GuruhChildren['guruh_id'],
-            'guruh' => Guruh::find($GuruhChildren['guruh_id'])->name,
-            'start' => $GuruhChildren['start_date'],
-            'meneger' => User::find($GuruhChildren['start_user_id'])->name,
-            'about' => $GuruhChildren['start_description'],
+            'guruh_id' => $GuruhChildren==null?"null":$GuruhChildren['guruh_id'],
+            'guruh' => $GuruhChildren==null?"null":Guruh::find($GuruhChildren['guruh_id'])->name,
+            'start' => $GuruhChildren==null?"null":$GuruhChildren['start_date'],
+            'meneger' =>$GuruhChildren==null?"null": User::find($GuruhChildren['start_user_id'])->name,
+            'about' => $GuruhChildren==null?"null":$GuruhChildren['start_description'],
         ];
     }
 
@@ -106,6 +106,64 @@ class ChildService{
             $array[$key]['status'] = $value->status;
         }
         return $array;
+    }
+
+    public function childUpdate(array $data){
+        $child = Childreen::findOrFail($data['id']);
+        return $child->update([
+            'name' => $data['name'],
+            'address' => $data['address'],
+            'birthday' => $data['birthday'],
+            'description' => $data['description'],
+        ]);
+    }
+
+    public function newGroup(int $id){
+        $Guruh = Guruh::get();
+        $array = [];
+        foreach ($Guruh as $key => $value) {
+            $GuruhChildren = GuruhChildren::where('guruh_id',$value->id)->where('children_id',$id)->where('status','true')->first();
+            if($GuruhChildren){}
+            else{
+                $array[$key]['guruh_id'] = $value->id;
+                $array[$key]['name'] = $value->name;
+            }
+        }
+        return $array;
+    }
+
+    public function changeGroups(array $data){
+        $GuruhChildren = GuruhChildren::where('children_id',$data['id'])->where('status','true')->first();
+        $GuruhChildren->end_date = date("Y-m-d");
+        $GuruhChildren->end_description = $data['end_description'];
+        $GuruhChildren->end_user_id = auth()->user()->id;
+        $GuruhChildren->status = 'false';
+        $GuruhChildren->save();
+        return GuruhChildren::create([
+            'guruh_id' => $data['guruh_id'],
+            'children_id' => $data['id'],
+            'start_date' => date("Y-m-d"),
+            'start_description' => $data['end_description'] ?? '',
+            'start_user_id' => auth()->user()->id,
+            'end_date' =>  date("Y-m-d"),
+            'end_description' => ' ', 
+            'end_user_id' => auth()->user()->id,
+            'status' => 'true',
+        ]);
+    }
+ // "id" => "12"
+ // "end_description" => "sfsfdsdfs"
+    public function LeaveKindergartenRequest(array $data){
+        //dd($data);
+        $GuruhChildren = GuruhChildren::where('children_id',$data['id'])->where('status','true')->first();
+        $GuruhChildren->end_date = date("Y-m-d");
+        $GuruhChildren->end_description = $data['end_description'];
+        $GuruhChildren->end_user_id = auth()->user()->id;
+        $GuruhChildren->status = 'false';
+        $GuruhChildren->save();
+        $Childreen = Childreen::find($data['id']);
+        $Childreen->status = 'cancel';
+        return $Childreen->save();
     }
 
 

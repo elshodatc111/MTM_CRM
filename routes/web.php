@@ -56,6 +56,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/childs/{id}', [ChildController::class, 'show'])->name('child_show');
     Route::post('/child/delete/parents', [ChildController::class, 'deleteRelatives'])->name('groups_delete_relatives');
     Route::post('/child/add/parents', [ChildController::class, 'addRelatives'])->name('groups_add_relatives');
+    Route::post('/child/update', [ChildController::class, 'childUpdate'])->name('groups_child_update');
+    Route::post('/child/chang/group', [ChildController::class, 'childChangeGroup'])->name('groups_change_group');
+    Route::post('/child/end', [ChildController::class, 'leave'])->name('groups_end');
 
     Route::get('/nochild', [ChildController::class, 'noindex'])->name('nochild');
     Route::get('/childsno/{id}', [ChildController::class, 'noshow'])->name('child_show_no');

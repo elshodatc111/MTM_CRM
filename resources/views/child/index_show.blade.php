@@ -5,7 +5,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Bola haida</h1>
+            <h1 class="h3 mb-0 text-gray-800">Bola haqida</h1>
         </div>
 
         <nav>
@@ -83,7 +83,13 @@
                                     so'm</h5>
                                 <table class="table table-sm table-bordered table-striped" style="font-size: 16px;">
                                     <tbody>
-                                        <tr><th>Guruh</th><td style="text-align:right"><a href="{{ route('groups_show', $groupabout['guruh_id'] )}}">{{ $groupabout['guruh'] }}</a></td></tr>
+                                        <tr><th>Guruh</th><td style="text-align:right">
+                                            @if($groupabout['guruh']=='null')
+                                                <p class="text-danger p-0 m-0">Bizni tark etdi</p>
+                                            @else
+                                                <a href="{{ route('groups_show', $groupabout['guruh_id'] )}}">{{ $groupabout['guruh'] }}</a>
+                                            @endif
+                                        </td></tr>
                                         <tr><th>Ro'yhatga olindi</th><td style="text-align:right">{{ $groupabout['start'] }}</td></tr>
                                         <tr><th>Menejer</th><td style="text-align:right">{{ $groupabout['meneger'] }}</td></tr>
                                         <tr><th>Ro'yhatga olish haqida</th><td style="text-align:right">{{ $groupabout['about'] }}</td></tr>
@@ -97,9 +103,12 @@
                                 <button type="button" class="btn btn-danger w-100 mb-1" data-toggle="modal" data-target="#paymart_return">
                                     <i class="fas fa-undo-alt"></i> To‘lovni qaytarish
                                 </button>
+                                @if(auth()->user()->status !=='admin')
                                 <button type="button" class="btn btn-warning text-white w-100 mb-1" data-toggle="modal" data-target="#add_chegirma">
                                     <i class="fas fa-tags"></i> Chegirma kiritish
                                 </button>
+                                @endif
+                                @if($groupabout['guruh']!=='null')
                                 <button type="button" class="btn btn-primary w-100 mb-1" data-toggle="modal" data-target="#group_change">
                                     <i class="fas fa-sync-alt"></i> Guruhni almashtirish
                                 </button>
@@ -112,6 +121,7 @@
                                 <button type="button" class="btn btn-outline-info w-100 mb-1" data-toggle="modal" data-target="#comments">
                                     <i class="fas fa-comment-dots"></i> Izoh qoldirish
                                 </button>
+                                @endif
                             </div>
                             <div class="col-12">
                                 <hr>
@@ -351,12 +361,21 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="#">
+                    <form method="POST" action="{{ route('groups_change_group') }}">
                         @csrf
-                        <input type="hidden" name="child_id" value="#">
+                        <input type="hidden" name="id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
-                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                            <label for="guruh_id">Yangi guruhni tanlang</label>
+                            <select required name="guruh_id" class="form-control">
+                                <option value="">Tanlang...</option>
+                                @foreach($newGroup as $item)
+                                <option value="{{ $item['guruh_id'] }}">{{ $item['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="end_description">Guruhni almashtirish haqida</label>
+                            <textarea class="form-control" id="end_description" name="end_description" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>
@@ -374,12 +393,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="#">
+                    <form method="POST" action="{{ route('groups_end') }}">
                         @csrf
-                        <input type="hidden" name="child_id" value="#">
+                        <input type="hidden" name="id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
-                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                            <label for="end_description">Bog'chani tark etish haqida</label>
+                            <textarea class="form-control" id="end_description" name="end_description" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>
@@ -397,12 +416,24 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="#">
+                    <form method="POST" action="{{ route('groups_child_update') }}">
                         @csrf
-                        <input type="hidden" name="child_id" value="#">
+                        <input type="hidden" name="id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
-                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                            <label for="name">FIO</label>
+                            <input type="text" required name="name"  value="{{ $about['name'] }}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Yashash manzili</label>
+                            <input type="text" required name="address"  value="{{ $about['address'] }}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="birthday">Tug'ilgan kuni</label>
+                            <input type="date" required name="birthday"  value="{{ $about['birthday'] }}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Bola haqida</label>
+                            <textarea class="form-control" id="description" name="description" required>{{ $about['description'] }}</textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>
