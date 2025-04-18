@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/child/chang/group', [ChildController::class, 'childChangeGroup'])->name('groups_change_group');
     Route::post('/child/end', [ChildController::class, 'leave'])->name('groups_end');
     Route::post('/child/comments', [ChildController::class, 'childrebCommentBola'])->name('child_comments');
+    Route::post('/child/paymart', [ChildController::class, 'PaymartStory'])->name('child_paymart');
 
     Route::get('/nochild', [ChildController::class, 'noindex'])->name('nochild');
     Route::get('/childsno/{id}', [ChildController::class, 'noshow'])->name('child_show_no');

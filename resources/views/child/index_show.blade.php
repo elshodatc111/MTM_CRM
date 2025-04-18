@@ -304,15 +304,39 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="#">
+                    <form method="POST" action="{{ route('child_paymart') }}">
                         @csrf
-                        <input type="hidden" name="child_id" value="#">
+                        <input type="hidden" name="children_id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
-                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                            <label for="amount">To'lov summasi</label>
+                            <input type="text" name="amount" id="amount1" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="type">To'lov turi</label>
+                            <select name="type"  class="form-control">
+                                <option value="">Tanlang</option>
+                                <option value="naqt">Naqt</option>
+                                <option value="plastik">Plastik</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="discription">To'lov haqida</label>
+                            <textarea class="form-control" id="discription" name="discription" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>
+                    <script>
+                        const amountInput = document.getElementById('amount1');
+                        amountInput.addEventListener('input', function (e) {
+                            let value = this.value.replace(/\s/g, ''); 
+                            value = value.replace(/\D/g, ''); 
+                            if (value.length > 1 && value.startsWith('0')) {
+                                value = value.replace(/^0+/, '');
+                            }
+                            const formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                            this.value = formattedValue;
+                        });
+                    </script>
                 </div>
             </div>
         </div>
@@ -327,15 +351,39 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="#">
+                <form method="POST" action="#">
                         @csrf
-                        <input type="hidden" name="child_id" value="#">
+                        <input type="hidden" name="children_id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
+                            <label for="comment">Qaytariladigan summa</label>
+                            <input type="text" id="amount2" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="comment">To'lov turi</label>
+                            <select name=""  class="form-control">
+                                <option value="">Tanlang</option>
+                                <option value="naqt">Naqt</option>
+                                <option value="plastik">Plastik</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="comment">To'lov qaytarish haqida</label>
                             <textarea class="form-control" id="comment" name="comment" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>
+                    <script>
+                        const amountInput2 = document.getElementById('amount2');
+                        amountInput2.addEventListener('input', function (e) {
+                            let value = this.value.replace(/\s/g, ''); 
+                            value = value.replace(/\D/g, ''); 
+                            if (value.length > 1 && value.startsWith('0')) {
+                                value = value.replace(/^0+/, '');
+                            }
+                            const formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                            this.value = formattedValue;
+                        });
+                    </script>
                 </div>
             </div>
         </div>
@@ -352,13 +400,29 @@
                 <div class="modal-body">
                     <form method="POST" action="#">
                         @csrf
-                        <input type="hidden" name="child_id" value="#">
+                        <input type="hidden" name="children_id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
+                            <label for="comment">Chegirma summasi</label>
+                            <input type="text" id="amount3" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="comment">Chegirma haqida izoh matni</label>
                             <textarea class="form-control" id="comment" name="comment" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>
+                    <script>
+                        const amountInput3 = document.getElementById('amount3');
+                        amountInput3.addEventListener('input', function (e) {
+                            let value = this.value.replace(/\s/g, ''); 
+                            value = value.replace(/\D/g, ''); 
+                            if (value.length > 1 && value.startsWith('0')) {
+                                value = value.replace(/^0+/, '');
+                            }
+                            const formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                            this.value = formattedValue;
+                        });
+                    </script>
                 </div>
             </div>
         </div>

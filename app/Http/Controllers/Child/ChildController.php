@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateChildRequest;
 use App\Http\Requests\ChangeGroupRequest;
 use App\Http\Requests\LeaveKindergartenRequest;
 use App\Http\Requests\CommentChildBolaRequest;
+use App\Http\Requests\PaymartStoreRequest;
 
 class ChildController extends Controller{
     protected $childService;
@@ -63,6 +64,11 @@ class ChildController extends Controller{
     public function childrebCommentBola(CommentChildBolaRequest $request){
         $this->childService->commentStore($request->validated());
         return redirect()->back()->with('success', 'Izoh muvaffaqiyatli saqlandi.');
+    }
+
+    public function PaymartStory(PaymartStoreRequest $request){
+        $this->childService->PaymartStory($request->validated());
+        return redirect()->back()->with('success', "To'lov muvaffaqiyatli saqlandi!");
     }
 
 

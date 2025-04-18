@@ -9,8 +9,41 @@ use App\Models\Guruh;
 use App\Models\GuruhChildren;
 use App\Models\Relatives;
 use App\Models\ChildrenComment;
+use App\Models\Paymart;
+use App\Models\Moliya;
 
 class ChildService{
+/*
+    "kassa_naqt" => 0
+    "naqt_chiqim_pedding" => 0
+    "naqt_xarajat_pedding" => 0
+    "kassa_plastik" => 0
+    "plastik_chiqim_pedding" => 0
+    "plastik_xarajat_pedding" => 0
+    "balans_naqt" => 0
+    "balans_plastik" => 0
+*/
+    public function PaymartStory(array $data){
+        $amount = str_replace(" ","",$data['amount']);
+        $Moliya = Moliya::first();
+        if($data['type']=='naqt'){
+            $Moliya->kassa_naqt = $Moliya->kassa_naqt + $amount;
+        }else{
+            $Moliya->kassa_plastik = $Moliya->kassa_plastik + $amount;
+        }
+        $Moliya->save();
+        $Childreen = Childreen::find($data['children_id']);
+        $Childreen->balans = $Childreen->balans + $amount;
+        $Childreen->save();
+        return Paymart::create([
+            'children_id' => $data['children_id'],
+            'user_id' => auth()->user()->id,
+            'amount' => $amount,
+            'type' => $data['type'],
+            'status' => 'tulov',
+            'discription' => $data['discription'],
+        ]);
+    }
 
     public function commentStore(array $data){
         return ChildrenComment::create([
