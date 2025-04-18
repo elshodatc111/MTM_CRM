@@ -29,7 +29,7 @@
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
-                </ul>
+                </ul> 
             </div>
         @endif
 
@@ -131,12 +131,24 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th>#</th>
-                                                <th>FIO</th>
-                                                <th>Ro'yhatga olindi</th>
-                                                <th>Balans</th>
+                                                <th>Izoh</th>
+                                                <th>Izoh vaqti</th>
+                                                <th>Meneger</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @forelse($comments as $item)
+                                                <tr>
+                                                    <td>{{ $loop->index+1 }}</td>
+                                                    <td>{{ $item['description'] }}</td>
+                                                    <td>{{ $item['created_at'] }}</td>
+                                                    <td>{{ $item['meneger'] }}</td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan=4 class="text-center">Ma'lumot topilmadi.</td>
+                                                </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>
@@ -451,12 +463,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="#">
+                    <form method="POST" action="{{ route('child_comments') }}">
                         @csrf
-                        <input type="hidden" name="child_id" value="#">
+                        <input type="hidden" name="children_id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Izoh matni</label>
-                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                            <label for="description">Izoh matni</label>
+                            <textarea class="form-control" id="description" name="description" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                     </form>

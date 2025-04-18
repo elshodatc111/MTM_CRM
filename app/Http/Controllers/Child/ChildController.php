@@ -9,6 +9,7 @@ use App\Http\Requests\StoreGuardianRequest;
 use App\Http\Requests\UpdateChildRequest;
 use App\Http\Requests\ChangeGroupRequest;
 use App\Http\Requests\LeaveKindergartenRequest;
+use App\Http\Requests\CommentChildBolaRequest;
 
 class ChildController extends Controller{
     protected $childService;
@@ -29,8 +30,9 @@ class ChildController extends Controller{
         $groupHistory = $this->childService->getHistoryGroupChildren($id);
         $Relatives = $this->childService->getRelatives($id);
         $newGroup = $this->childService->newGroup($id);
-        //dd($newGroup);
-        return view('child.index_show',compact('about','groupabout','groupHistory','Relatives','newGroup'));
+        $comments = $this->childService->getComments($id);
+        //dd($comments);
+        return view('child.index_show',compact('about','groupabout','groupHistory','Relatives','newGroup','comments'));
     }
 
     public function deleteRelatives(Request $request){
@@ -56,6 +58,11 @@ class ChildController extends Controller{
     public function leave(LeaveKindergartenRequest $request){
         $this->childService->LeaveKindergartenRequest($request->validated());
         return back()->with('success', 'Bola bog‘chani tark etdi.');
+    }
+
+    public function childrebCommentBola(CommentChildBolaRequest $request){
+        $this->childService->commentStore($request->validated());
+        return redirect()->back()->with('success', 'Izoh muvaffaqiyatli saqlandi.');
     }
 
 

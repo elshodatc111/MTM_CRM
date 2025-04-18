@@ -110,6 +110,7 @@ class GuruhService{
                 $kichik_tarbiyachi = $User->name;
             }
         }
+        $GuruhChildren = count(GuruhChildren::where('guruh_id',$id)->where('status','true')->get());
         return [
             'id' => $guruh['id'],
             'name' => $guruh['name'],
@@ -118,7 +119,7 @@ class GuruhService{
             'katta_amount' => $guruh['katta_tarbiyachi']*100/100,
             'kichik_tarbiyachi' => $kichik_tarbiyachi,
             'kichik_amount' => $guruh['kichik_tarbiyachi']*100/100,
-            'bolalar' => 0,
+            'bolalar' => $GuruhChildren,
             'meneger' => User::find($guruh['user_id'])->name,
             'created_at' => $guruh['created_at'],
             'updated_at' => $guruh['updated_at'],
@@ -146,7 +147,7 @@ class GuruhService{
                 $Tarbiyachilar[$key]['name'] = $value->name;
             }
         }
-        return $Tarbiyachilar;
+        return $Tarbiyachilar; 
     }
 
     public function addGroupBigAttach(array $data){ 

@@ -8,8 +8,29 @@ use App\Models\User;
 use App\Models\Guruh;
 use App\Models\GuruhChildren;
 use App\Models\Relatives;
+use App\Models\ChildrenComment;
 
 class ChildService{
+
+    public function commentStore(array $data){
+        return ChildrenComment::create([
+            'children_id' => $data['children_id'],
+            'description' => $data['description'],
+            'meneger_id' => auth()->user()->id,
+        ]);
+    }
+
+    public function getComments(int $id){
+        $ChildrenComment = ChildrenComment::where('children_id',$id)->get();
+        $array = [];
+        foreach ($ChildrenComment as $key => $value) {
+            $array[$key]['id'] = $value->id;
+            $array[$key]['description'] = $value->description;
+            $array[$key]['meneger'] = User::find($value->meneger_id)->name;
+            $array[$key]['created_at'] = $value->created_at;
+        }
+        return $array;
+    }
 
     public function addRelatives(array $data){
         return Relatives::create([
@@ -19,7 +40,7 @@ class ChildService{
             'phone1' => $data['phone1'],
             'phone2' => $data['phone2'],
             'user_id' => auth()->user()->id,
-        ]);
+        ]); 
     }
 
     public function deleteRelatives($id){
