@@ -259,11 +259,26 @@
                                         <th>#</th>
                                         <th>To'lov summasni</th>
                                         <th>To'lov turi</th>
+                                        <th>To'lov haqida</th>
                                         <th>To'lov vaqti</th>
                                         <th>Meneger</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @forelse($paymaet as $item)
+                                    <tr>
+                                        <td>{{ $loop->index+1 }}</td>
+                                        <td>{{ number_format($item['amount'], 0, ',', ' ') }}        so'm</td>
+                                        <td>{{ $item['status'] }} ({{ $item['type'] }})</td>
+                                        <td>{{ $item['discription'] }}</td>
+                                        <td>{{ $item['created_at'] }}</td>
+                                        <td>{{ $item['meneger'] }}</td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan=5 class="text-center">Malumot topilmadi.</td>
+                                    </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -351,16 +366,31 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                <form method="POST" action="#">
+                    <table class="table table-bordered text-center" style="font-size:12px;">
+                        <tr>
+                            <th colspan=2>Kassada mavjud</th>
+                        </tr>
+                        <tr>
+                            <td>Naqt</td>
+                            <td>Plastik</td>
+                        </tr>
+                        <tr>
+                            <td>{{ number_format($Kassa['kassa_naqt'], 0, ',', ' ') }} so'm</td>
+                            <td>{{ number_format($Kassa['kassa_plastik'], 0, ',', ' ') }} so'm</td>
+                        </tr>
+                    </table>
+                    <form method="POST" action="{{ route('child_paymart_return') }}">
                         @csrf
                         <input type="hidden" name="children_id" value="{{ $about['id'] }}">
+                        <input type="hidden" name="kassa_naqt" value="{{ $Kassa['kassa_naqt'] }}">
+                        <input type="hidden" name="kassa_plastik" value="{{ $Kassa['kassa_plastik'] }}">
                         <div class="form-group">
-                            <label for="comment">Qaytariladigan summa</label>
-                            <input type="text" id="amount2" required class="form-control">
+                            <label for="amount">Qaytariladigan summa</label>
+                            <input type="text" id="amount2" name="amount" required class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="comment">To'lov turi</label>
-                            <select name=""  class="form-control">
+                            <label for="type">To'lov turi</label>
+                            <select name="type"  class="form-control">
                                 <option value="">Tanlang</option>
                                 <option value="naqt">Naqt</option>
                                 <option value="plastik">Plastik</option>
@@ -398,12 +428,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="#">
+                    <form method="POST" action="{{ route('child_paymart_chegirma') }}">
                         @csrf
                         <input type="hidden" name="children_id" value="{{ $about['id'] }}">
                         <div class="form-group">
-                            <label for="comment">Chegirma summasi</label>
-                            <input type="text" id="amount3" required class="form-control">
+                            <label for="amount">Chegirma summasi</label>
+                            <input type="text" id="amount3" name="amount" required class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="comment">Chegirma haqida izoh matni</label>

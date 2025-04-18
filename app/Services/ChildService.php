@@ -13,16 +13,79 @@ use App\Models\Paymart;
 use App\Models\Moliya;
 
 class ChildService{
-/*
-    "kassa_naqt" => 0
-    "naqt_chiqim_pedding" => 0
-    "naqt_xarajat_pedding" => 0
-    "kassa_plastik" => 0
-    "plastik_chiqim_pedding" => 0
-    "plastik_xarajat_pedding" => 0
-    "balans_naqt" => 0
-    "balans_plastik" => 0
-*/
+
+    public function getPaymart(int $id){
+        $Paymart = Paymart::where('children_id',$id)->get();
+        $array = [];
+        foreach ($Paymart as $key => $value) {
+            $array[$key]['id'] = $value->id;
+            $array[$key]['amount'] = $value->amount;
+            $array[$key]['type'] = $value->type;
+            $array[$key]['status'] = $value->status;
+            $array[$key]['discription'] = $value->discription;
+            $array[$key]['created_at'] = $value->created_at;
+            $array[$key]['meneger'] = User::find($value->user_id)->name;
+        }
+        return $array;
+    }
+
+    public function discountStore(array $data){
+        $amount = str_replace(" ","",$data['amount']);
+        $Childreen = Childreen::find($data['children_id']);
+        $Childreen->balans = $Childreen->balans + $amount;
+        Paymart::create([
+            'children_id' => $data['children_id'],
+            'user_id' => auth()->user()->id,
+            'amount' => $amount,
+            'type' => 'chegirma',
+            'status' => 'chegirma',
+            'discription' => $data['comment'],
+        ]);
+        return $Childreen->save();
+    }
+
+    public function refundStore(array $data){
+        $children_id = $data['children_id'];
+        $kassa_naqt = $data['kassa_naqt'];
+        $kassa_plastik = str_replace(" ","",$data['kassa_plastik']);
+        $amount = str_replace(" ","",$data['amount']);
+        $type = $data['type'];
+        $comment = $data['comment'];
+        if($type == 'naqt' AND $kassa_naqt<=$amount){
+            return 'false';
+        }
+        if($type == 'plastik' AND $kassa_plastik<=$amount){
+            return 'false';
+        }
+        $Childreen = Childreen::find($data['children_id']);
+        $Childreen->balans = $Childreen->balans - $amount;
+        $Childreen->save();
+        $Moliya = Moliya::first();
+        if($data['type']=='naqt'){
+            $Moliya->kassa_naqt = $Moliya->kassa_naqt - $amount;
+        }else{
+            $Moliya->kassa_plastik = $Moliya->kassa_plastik - $amount;
+        }
+        $Moliya->save();
+        Paymart::create([
+            'children_id' => $data['children_id'],
+            'user_id' => auth()->user()->id,
+            'amount' => $amount,
+            'type' => $data['type'],
+            'status' => 'qaytarildi',
+            'discription' => $data['comment'],
+        ]);
+        return 'true';
+    }
+
+    public function getKassa(){
+        $Kassa = Moliya::first();
+        return [
+            'kassa_naqt' => $Kassa['kassa_naqt'],
+            'kassa_plastik' => $Kassa['kassa_plastik'],
+        ];
+    }
+
     public function PaymartStory(array $data){
         $amount = str_replace(" ","",$data['amount']);
         $Moliya = Moliya::first();

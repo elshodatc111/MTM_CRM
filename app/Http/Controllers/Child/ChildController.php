@@ -11,6 +11,8 @@ use App\Http\Requests\ChangeGroupRequest;
 use App\Http\Requests\LeaveKindergartenRequest;
 use App\Http\Requests\CommentChildBolaRequest;
 use App\Http\Requests\PaymartStoreRequest;
+use App\Http\Requests\RefundStoreRequest;
+use App\Http\Requests\DiscountStoreRequest;
 
 class ChildController extends Controller{
     protected $childService;
@@ -32,8 +34,10 @@ class ChildController extends Controller{
         $Relatives = $this->childService->getRelatives($id);
         $newGroup = $this->childService->newGroup($id);
         $comments = $this->childService->getComments($id);
-        //dd($comments);
-        return view('child.index_show',compact('about','groupabout','groupHistory','Relatives','newGroup','comments'));
+        $Kassa = $this->childService->getKassa();
+        $paymaet = $this->childService->getPaymart($id);
+        //dd($paymaet);
+        return view('child.index_show',compact('about','groupabout','groupHistory','Relatives','newGroup','comments','Kassa','paymaet'));
     }
 
     public function deleteRelatives(Request $request){
@@ -69,6 +73,23 @@ class ChildController extends Controller{
     public function PaymartStory(PaymartStoreRequest $request){
         $this->childService->PaymartStory($request->validated());
         return redirect()->back()->with('success', "To'lov muvaffaqiyatli saqlandi!");
+    }
+
+
+    public function refundStore(RefundStoreRequest $request){
+        $create = $this->childService->refundStore($request->validated());
+        if($create=='true'){
+            return redirect()->back()->with('success', "To'lov muvaffaqiyatli qaytarildi!");
+        }else{
+            return redirect()->back()->with('success', "Kassada yetarli mablag' mavjud emas!");
+        }
+    }
+
+
+
+    public function discountStore(DiscountStoreRequest $request){
+        $this->childService->discountStore($request->validated());
+        return back()->with('success', 'Chegirma muvaffaqiyatli qo‘shildi!');
     }
 
 

@@ -61,6 +61,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/child/end', [ChildController::class, 'leave'])->name('groups_end');
     Route::post('/child/comments', [ChildController::class, 'childrebCommentBola'])->name('child_comments');
     Route::post('/child/paymart', [ChildController::class, 'PaymartStory'])->name('child_paymart');
+    Route::post('/child/paymart/return', [ChildController::class, 'refundStore'])->name('child_paymart_return');
+    Route::post('/child/paymart/chegirma', [ChildController::class, 'discountStore'])->name('child_paymart_chegirma');
 
     Route::get('/nochild', [ChildController::class, 'noindex'])->name('nochild');
     Route::get('/childsno/{id}', [ChildController::class, 'noshow'])->name('child_show_no');
