@@ -72,6 +72,9 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/kassa', [KassaController::class, 'index'])->name('kassa');
     Route::post('/kassa/chiqim', [KassaController::class, 'kassaChiqim'])->name('kassa_chiqim');
+    Route::post('/kassa/xarajat', [KassaController::class, 'kassaXarajat'])->name('kassa_xarajat');
+    Route::post('/kassa/trash', [KassaController::class, 'kassaTrash'])->name('kassa_trash');
+    Route::post('/kassa/success', [KassaController::class, 'kassaSuccces'])->name('kassa_success');
 
 
     

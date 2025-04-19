@@ -14,7 +14,7 @@ class StoreChiqimMoliyaHistoryRequest extends FormRequest{
             'kassa_naqt' => ['required'],
             'kassa_plastik' => ['required'],
             'amount' => ['required'],
-            'type' => ['required', 'in:kassa_chiqim_naqt,kassa_chiqim_pastik'],
+            'type' => ['required', 'in:kassa_chiqim_naqt,kassa_chiqim_pastik,kassa_xarajat_naqt,kassa_xarajat_plastik'],
             'start_description' => ['required', 'string', 'max:1000'],
         ];
     }

@@ -131,20 +131,59 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" width="100%" cellspacing="0" style="font-size:12px;">
+                        <table class="table table-bordered text-center" width="100%" cellspacing="0" style="font-size:12px;">
                             <thead class="text-center bg-primary text-white">
                                 <tr>
                                     <th class="text-center align-middle">#</th>
                                     <th class="text-center align-middle">Chiqim turi</th>
                                     <th class="text-center align-middle">Chiqim Summasi</th>
-                                    <th class="text-center align-middle">Summa Turi</th>
                                     <th class="text-center align-middle">Chiqim haqida</th>
                                     <th class="text-center align-middle">Meneger</th>
                                     <th class="text-center align-middle">Chiqim vaqti</th>
+                                    <th class="text-center align-middle">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-
+                                @forelse($getMoliyaHistory as $item)
+                                <tr>
+                                    <td>{{ $loop->index+1 }}</td>
+                                    <td>
+                                        @if($item['type'] == 'kassa_chiqim_naqt')
+                                            Chiqim(Naqt)   
+                                        @elseif($item['type'] == 'kassa_chiqim_pastik') 
+                                            Chiqim(Plastik)
+                                        @elseif($item['type'] == 'kassa_xarajat_plastik') 
+                                            Xarajat(Plastik)
+                                        @else
+                                            Xarajat(Naqt)
+                                        @endif
+                                    </td>
+                                    <td>
+                                        {{ number_format($item['amount'], 0, ',', ' ') }} so'm
+                                    </td>
+                                    <td>{{ $item['start_description'] }}</td>
+                                    <td>{{ $item['meneger'] }}</td>
+                                    <td>{{ $item['created_at'] }}</td>
+                                    <td class="text-center">
+                                        <div style="display: flex; gap: 5px;">
+                                            <form action="{{ route('kassa_trash') }}" method="post">
+                                                @csrf 
+                                                <input type="hidden" name="id" value="{{ $item['id'] }}">
+                                                <button class="btn btn-danger p-0 px-1"><i class="fa fa-trash"></i></button>
+                                            </form>
+                                            <form action="{{ route('kassa_success') }}" method="post">
+                                                @csrf 
+                                                <input type="hidden" name="id" value="{{ $item['id'] }}">
+                                                <button class="btn btn-primary p-0 px-1"><i class="fa fa-check"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan=7 class="text-center">Ma'lumot topilmadi</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -236,29 +275,31 @@
                                 <td>{{ number_format($kassa['kassa_plastik'], 0, ',', ' ') }} so'm</td>
                             </tr>
                         </table>
-                        <form method="POST" action="{{ route('groups_create') }}">
+                        <form method="POST" action="{{ route('kassa_xarajat') }}">
                             @csrf
+                            <input type="hidden" name="kassa_naqt" value="{{ $kassa['kassa_naqt'] }}">
+                            <input type="hidden" name="kassa_plastik" value="{{ $kassa['kassa_plastik'] }}">
                             <div class="form-group">
-                                <label for="amount">Xarajat summasi</label>
-                                <input type="text" class="form-control" id="amount" name="amount" required>
+                                <label for="amount2">Xarajat summasi</label>
+                                <input type="text" class="form-control" id="amount2" name="amount" required>
                             </div>
                             <div class="form-group">
-                                <label for="katta_tarbiyachi">Xarajat turi</label>
-                                <select name="" class="form-control">
-                                    <option value="">Tanlang...</option>
-                                    <option value="naqt">Naqt</option>
-                                    <option value="plastik">Plastik</option>
+                                <label for="type">Xarajat turi</label>
+                                <select name="type" class="form-control">
+                                    <option value="">Tanlang...</option> 
+                                    <option value="kassa_xarajat_naqt">Naqt</option>
+                                    <option value="kassa_xarajat_plastik">Plastik</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="kichik_tarbiyachi">Xarajat haqida</label>
-                                <textarea name="" class="form-control" required></textarea>
+                                <label for="start_description">Xarajat haqida</label>
+                                <textarea name="start_description" class="form-control" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Saqlash</button>
                         </form>
                         <script>
-                            const amountInput = document.getElementById('amount');
-                            amountInput.addEventListener('input', function (e) {
+                            const amountInput2 = document.getElementById('amount2');
+                            amountInput2.addEventListener('input', function (e) {
                                 let value = this.value.replace(/\s/g, ''); 
                                 value = value.replace(/\D/g, ''); 
                                 if (value.length > 1 && value.startsWith('0')) {
