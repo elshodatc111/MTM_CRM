@@ -24,8 +24,8 @@
                     <span>Bolalar</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item {{ request()->routeIs(['kassa']) ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('kassa') }}">
                     <i class="fas fa-fw fa-cash-register"></i>
                     <span>Kassa</span>
                 </a>

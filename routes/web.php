@@ -8,6 +8,7 @@ use App\Http\Controllers\vacancy\VacancyChildController;
 use App\Http\Controllers\Days\DaysController;
 use App\Http\Controllers\Group\GroupController;
 use App\Http\Controllers\Child\ChildController;
+use App\Http\Controllers\Kassa\KassaController;
 
 Route::middleware('auth')->group(function () {
 
@@ -66,6 +67,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/nochild', [ChildController::class, 'noindex'])->name('nochild');
     Route::get('/childsno/{id}', [ChildController::class, 'noshow'])->name('child_show_no');
+
+
+    
+    Route::get('/kassa', [KassaController::class, 'index'])->name('kassa');
+    Route::post('/kassa/chiqim', [KassaController::class, 'kassaChiqim'])->name('kassa_chiqim');
 
 
     
