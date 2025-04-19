@@ -9,6 +9,7 @@ use App\Http\Controllers\Days\DaysController;
 use App\Http\Controllers\Group\GroupController;
 use App\Http\Controllers\Child\ChildController;
 use App\Http\Controllers\Kassa\KassaController;
+use App\Http\Controllers\Moliya\MoliyaController;
 
 Route::middleware('auth')->group(function () {
 
@@ -75,6 +76,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/kassa/xarajat', [KassaController::class, 'kassaXarajat'])->name('kassa_xarajat');
     Route::post('/kassa/trash', [KassaController::class, 'kassaTrash'])->name('kassa_trash');
     Route::post('/kassa/success', [KassaController::class, 'kassaSuccces'])->name('kassa_success');
+    
+    Route::get('/moliya', [MoliyaController::class, 'index'])->name('moliya');
+    Route::post('/moliya/chiqim', [MoliyaController::class, 'chiqimSaqlash'])->name('moliya_chiqim');
+    Route::post('/moliya/xarajat', [MoliyaController::class, 'xarajatSaqlash'])->name('moliya_xarajat');
 
 
     

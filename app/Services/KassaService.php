@@ -140,7 +140,7 @@ class KassaService{
             $Moliya->balans_naqt = $Moliya->balans_naqt + $amount;
         }elseif($MoliyaHistory->type == 'kassa_chiqim_pastik'){
             $Moliya->plastik_chiqim_pedding = $Moliya->plastik_chiqim_pedding - $amount;
-            $Moliya->balans_plastik = $Moliya->balans_plastik - $amount;
+            $Moliya->balans_plastik = $Moliya->balans_plastik + $amount;
         }elseif($MoliyaHistory->type == 'kassa_xarajat_plastik'){
             $Moliya->plastik_xarajat_pedding = $Moliya->plastik_xarajat_pedding - $amount;
         }elseif($MoliyaHistory->type == 'kassa_xarajat_naqt'){

@@ -30,8 +30,8 @@
                     <span>Kassa</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item {{ request()->routeIs(['moliya']) ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('moliya') }}">
                     <i class="fas fa-fw fa-chart-line"></i>
                     <span>Moliya</span>
                 </a>
